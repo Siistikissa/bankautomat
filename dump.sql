@@ -16,85 +16,111 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `account`
+-- Table structure for table `accounts`
 --
 
-DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `account` (
-  `id_account` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `accounts` (
+  `ac_id` int NOT NULL AUTO_INCREMENT,
   `balance` decimal(13,2) DEFAULT '0.00',
   `credit` decimal(13,2) DEFAULT '0.00',
-  `Customer_id_customer` int NOT NULL,
-  `Card_id_card` int DEFAULT NULL,
-  PRIMARY KEY (`id_account`),
-  KEY `fk_Account_Customer1_idx` (`Customer_id_customer`),
-  KEY `fk_Account_Card1_idx` (`Card_id_card`),
-  CONSTRAINT `fk_Account_Card1` FOREIGN KEY (`Card_id_card`) REFERENCES `mydb`.`card` (`id_card`),
-  CONSTRAINT `fk_Account_Customer1` FOREIGN KEY (`Customer_id_customer`) REFERENCES `mydb`.`customer` (`id_customer`)
+  `cu_id` int NOT NULL,
+  `ca_id` int DEFAULT NULL,
+  PRIMARY KEY (`ac_id`),
+  KEY `fk_Card_Customer1_idx` (`cu_id`),
+  KEY `fk_Account_Card1_idx` (`ca_id`),
+  CONSTRAINT `fk_Account_Card1` FOREIGN KEY (`ca_id`) REFERENCES `mydb`.`cards` (`ca_id`),
+  CONSTRAINT `fk_Card_Customer1` FOREIGN KEY (`cu_id`) REFERENCES `mydb`.`customers` (`cu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `account`
+-- Dumping data for table `accounts`
 --
 
-LOCK TABLES `account` WRITE;
-/*!40000 ALTER TABLE `account` DISABLE KEYS */;
-/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+LOCK TABLES `accounts` WRITE;
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `card`
+-- Table structure for table `cards`
 --
 
-DROP TABLE IF EXISTS `card`;
+DROP TABLE IF EXISTS `cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `card` (
-  `id_card` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `cards` (
+  `ca_id` int NOT NULL AUTO_INCREMENT,
   `pin` varchar(255) NOT NULL,
-  `type` int NOT NULL,
+  `cu_id` int NOT NULL,
   `key` varchar(16) DEFAULT NULL,
-  `Customer_id_customer` int NOT NULL,
-  PRIMARY KEY (`id_card`),
-  KEY `fk_Card_Customer1_idx` (`Customer_id_customer`),
-  CONSTRAINT `fk_Card_Customer1` FOREIGN KEY (`Customer_id_customer`) REFERENCES `mydb`.`customer` (`id_customer`)
+  PRIMARY KEY (`ca_id`),
+  KEY `fk_Card_Customer2_idx` (`cu_id`),
+  CONSTRAINT `fk_Card_Customer2` FOREIGN KEY (`cu_id`) REFERENCES `mydb`.`customers` (`cu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `card`
+-- Dumping data for table `cards`
 --
 
-LOCK TABLES `card` WRITE;
-/*!40000 ALTER TABLE `card` DISABLE KEYS */;
-/*!40000 ALTER TABLE `card` ENABLE KEYS */;
+LOCK TABLES `cards` WRITE;
+/*!40000 ALTER TABLE `cards` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cards` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `customer`
+-- Table structure for table `customers`
 --
 
-DROP TABLE IF EXISTS `customer`;
+DROP TABLE IF EXISTS `customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `customer` (
-  `id_customer` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `customers` (
+  `cu_id` int NOT NULL AUTO_INCREMENT,
   `fname` varchar(45) NOT NULL,
   `lname` varchar(45) NOT NULL,
-  PRIMARY KEY (`id_customer`)
+  PRIMARY KEY (`cu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `customer`
+-- Dumping data for table `customers`
 --
 
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transactions`
+--
+
+DROP TABLE IF EXISTS `transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transactions` (
+  `tr_id` int NOT NULL AUTO_INCREMENT,
+  `transaction` decimal(13,2) NOT NULL,
+  `ac_id` int NOT NULL,
+  `tr_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`tr_id`),
+  KEY `fk_Account_transactions_Account1_idx` (`ac_id`),
+  CONSTRAINT `fk_Account_transactions_Account1` FOREIGN KEY (`ac_id`) REFERENCES `mydb`.`accounts` (`ac_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transactions`
+--
+
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -106,4 +132,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 10:18:07
+-- Dump completed on 2024-03-21 11:36:31
