@@ -29,11 +29,11 @@ CREATE TABLE `accounts` (
   `cu_id` int NOT NULL,
   `ca_id` int DEFAULT NULL,
   PRIMARY KEY (`ac_id`),
-  KEY `fk_Card_Customer1_idx` (`cu_id`),
-  KEY `fk_Account_Card1_idx` (`ca_id`),
-  CONSTRAINT `fk_Account_Card1` FOREIGN KEY (`ca_id`) REFERENCES `mydb`.`cards` (`ca_id`),
-  CONSTRAINT `fk_Card_Customer1` FOREIGN KEY (`cu_id`) REFERENCES `mydb`.`customers` (`cu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_Account_Card1` (`ca_id`),
+  KEY `fk_Card_Customer1` (`cu_id`),
+  CONSTRAINT `fk_Account_Card1` FOREIGN KEY (`ca_id`) REFERENCES `cards` (`ca_id`),
+  CONSTRAINT `fk_Card_Customer1` FOREIGN KEY (`cu_id`) REFERENCES `customers` (`cu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES (1,2000.00,0.00,1,3);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,9 +59,9 @@ CREATE TABLE `cards` (
   `cu_id` int NOT NULL,
   `key` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`ca_id`),
-  KEY `fk_Card_Customer2_idx` (`cu_id`),
-  CONSTRAINT `fk_Card_Customer2` FOREIGN KEY (`cu_id`) REFERENCES `mydb`.`customers` (`cu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_Card_Customer2` (`cu_id`),
+  CONSTRAINT `fk_Card_Customer2` FOREIGN KEY (`cu_id`) REFERENCES `customers` (`cu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +70,7 @@ CREATE TABLE `cards` (
 
 LOCK TABLES `cards` WRITE;
 /*!40000 ALTER TABLE `cards` DISABLE KEYS */;
+INSERT INTO `cards` VALUES (3,'123',1,NULL);
 /*!40000 ALTER TABLE `cards` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +86,7 @@ CREATE TABLE `customers` (
   `fname` varchar(45) NOT NULL,
   `lname` varchar(45) NOT NULL,
   PRIMARY KEY (`cu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,6 +95,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'Matti','Matonen');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,9 +112,9 @@ CREATE TABLE `transactions` (
   `ac_id` int NOT NULL,
   `tr_date` datetime DEFAULT NULL,
   PRIMARY KEY (`tr_id`),
-  KEY `fk_Account_transactions_Account1_idx` (`ac_id`),
-  CONSTRAINT `fk_Account_transactions_Account1` FOREIGN KEY (`ac_id`) REFERENCES `mydb`.`accounts` (`ac_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_Accounts_transactions_Accounts1` (`ac_id`),
+  CONSTRAINT `fk_Accounts_transactions_Accounts1` FOREIGN KEY (`ac_id`) REFERENCES `accounts` (`ac_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +123,7 @@ CREATE TABLE `transactions` (
 
 LOCK TABLES `transactions` WRITE;
 /*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+INSERT INTO `transactions` VALUES (1,20.00,1,'2024-03-24 00:00:00');
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -132,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-21 11:36:31
+-- Dump completed on 2024-03-24 17:58:20
