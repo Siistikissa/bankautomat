@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const transactionsRouter = require('./routes/transactions');
-const customersRouter = requier('./routes/customers');
+const customersRouter = require('./routes/customers');
 const cardsRouter = require('./routes/cards');
 const accountsRouter = require('./routes/accounts');
 
