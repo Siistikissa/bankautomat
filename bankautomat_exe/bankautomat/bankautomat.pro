@@ -9,13 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    build/bankui.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    build/bankui.h \
     mainwindow.h
 
 FORMS += \
+    build/bankui.ui \
     mainwindow.ui
 
 # Default rules for deployment.
