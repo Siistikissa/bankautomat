@@ -9,8 +9,8 @@ const cards = {
   },
   add: function(cards, callback) {
     return db.query(
-      'insert into cards (pin,cu_id,key) values(?,?,?)',
-      [cards.pin, cards.cu_id, cards.key],
+      'insert into cards (pin,cu_id,serial) values(?,?,?)',
+      [cards.pin, cards.cu_id, cards.serial],
       callback
     );
   },
@@ -19,8 +19,8 @@ const cards = {
   },
   update: function(id, cards, callback) {
     return db.query(
-      'update cards set pin=?,cu_id=?, key=? where ca_id=?',
-      [cards.pin, cards.cu_id, cards.key, id],
+      'update cards set pin=?,cu_id=?, serial=? where ca_id=?',
+      [cards.pin, cards.cu_id, cards.serial, id],
       callback
     );
   }
