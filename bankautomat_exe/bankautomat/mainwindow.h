@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,11 +17,12 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_RFID_clicked();
+    void on_RFIDButton_clicked();
 
-    void on_PINUI_clicked();
+    void on_PINUIButton_clicked();
 
 private:
     Ui::MainWindow *ui;
+    void createBankUI();
 };
 #endif // MAINWINDOW_H

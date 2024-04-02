@@ -35,14 +35,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="RFID">
+         <widget class="QPushButton" name="RFIDButton">
           <property name="text">
            <string>RFID card number</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="PINUI">
+         <widget class="QPushButton" name="PINUIButton">
           <property name="text">
            <string>PINUI</string>
           </property>
