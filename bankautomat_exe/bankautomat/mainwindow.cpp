@@ -13,3 +13,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_RFID_clicked()
+{
+
+}
+
+
+void MainWindow::on_PINUI_clicked()
+{
+
+}
+
