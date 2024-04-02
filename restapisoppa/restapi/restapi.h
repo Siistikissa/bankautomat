@@ -13,17 +13,33 @@ class RESTAPI_EXPORT Restapi : public QObject
 public:
     Restapi();
     QString lastReply;
+    //test
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);
-
+    //real
+    void getSerial();
+    void getPin();
+    void getAccount();
+    void getTransactions();
+    void postWithdraw(QJsonObject jsonObj);
 signals:
     void replySet(QString lastReply);
 
 private slots:
-    void postCustomerResponse(QNetworkReply *reply);
-    void getAccountsResponse(QNetworkReply *reply);
+    void getResponse(QNetworkReply *reply);
+    void postResponse(QNetworkReply *reply);
 
 private:
+
+    void getResponseEnd(QString responseData);
+    QJsonArray getParserJson(QNetworkReply *reply);
+    QString getParserQstring(QJsonArray json_array);
+    void getConnect(QString site_url);
+
+    void postConnect(QString site_url, QJsonObject jsonObj);
+
+    std::vector<QString> targets;
+
     QNetworkAccessManager *getManager;
     QNetworkAccessManager *postManager;
     QNetworkReply *reply;
