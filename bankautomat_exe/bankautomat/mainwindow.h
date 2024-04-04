@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "pinui.h"
 #include <QMainWindow>
 #include <QDebug>
 
@@ -16,9 +17,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void createPinUI();
+
 private slots:
     void on_RFIDButton_clicked();
-
     void on_PINUIButton_clicked();
 
 private:
