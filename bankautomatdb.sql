@@ -57,7 +57,7 @@ CREATE TABLE `cards` (
   `ca_id` int NOT NULL AUTO_INCREMENT,
   `pin` varchar(255) NOT NULL,
   `cu_id` int NOT NULL,
-  `key` varchar(16) DEFAULT NULL,
+  `serial` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`ca_id`),
   KEY `fk_Card_Customer2` (`cu_id`),
   CONSTRAINT `fk_Card_Customer2` FOREIGN KEY (`cu_id`) REFERENCES `customers` (`cu_id`)
@@ -136,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-24 17:58:20
+-- Dump completed on 2024-03-26 13:03:03
