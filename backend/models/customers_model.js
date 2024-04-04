@@ -9,7 +9,7 @@ const customers = {
   },
   add: function(customers, callback) {
     return db.query(
-      'insert into customers (fname,lname,) values(?,?)',
+      'insert into customers (fname,lname) values(?,?)',
       [customers.fname, customers.lname],
       callback
     );

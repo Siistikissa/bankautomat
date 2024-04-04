@@ -19,8 +19,8 @@ const cards = {
   },
   update: function(id, cards, callback) {
     return db.query(
-      'update cards set pin=?,cu_id=?, serial=? where ca_id=?',
-      [cards.pin, cards.cu_id, cards.serial, id],
+      'update cards set pin=?,cu_id=?, key=? where ca_id=?',
+      [cards.pin, cards.cu_id, cards.key, id],
       callback
     );
   }
