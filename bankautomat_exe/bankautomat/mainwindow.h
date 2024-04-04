@@ -24,5 +24,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void createBankUI();
+    bool RFIDpressed = false;
 };
 #endif // MAINWINDOW_H
