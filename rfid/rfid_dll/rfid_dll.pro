@@ -1,4 +1,6 @@
-QT -= gui serialport
+QT -= gui
+QT += serialport
+QT += core
 
 TEMPLATE = lib
 DEFINES += RFID_DLL_LIBRARY

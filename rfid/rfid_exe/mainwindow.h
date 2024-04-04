@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include "qpushbutton.h"
 #include "rfid_dll.h"
-#include <QMainWindow>
-#include <Qstring>
+#include <QString>
 #include <QLineEdit>
 #include <QSerialPort>
 QT_BEGIN_NAMESPACE
@@ -21,14 +20,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+    void onRfidDataReceived(QByteArray data);
 private slots:
-    void createObject();
-    void readRfidData();
+    void OpenSerialPort();
 private:
     Ui::MainWindow *ui;
+    Rfid_dll *rfidDll=new Rfid_dll;
     QPushButton *m_button;
-    QSerialPort *PORT;
     QLineEdit *m_lineEdit;
-    Rfid_dll *m_rfidObject;
+
 };
 #endif // MAINWINDOW_H
