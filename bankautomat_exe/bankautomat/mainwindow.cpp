@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->PINUIButton, &QPushButton::clicked, this, &MainWindow::createPinUI);
     //connect(ui->PINUIButton, &QPushButton::clicked, this, &MainWindow::createBankUI);
 }
 
@@ -15,6 +16,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::createPinUI()
+{
+    PinUI* PinWindow = new PinUI;
+    PinWindow->show();
+}
 
 void MainWindow::on_RFIDButton_clicked()
 {
@@ -26,12 +32,11 @@ void MainWindow::on_RFIDButton_clicked()
 void MainWindow::on_PINUIButton_clicked()
 {
     qDebug()<< "PINUI pressed";
-
-    if(RFIDpressed){
+    /*if(RFIDpressed){
         qDebug()<< "BankUI started";
         bankUI* BankWindow = new bankUI;
         BankWindow->show();
-    }
+    }*/
 
 }
 

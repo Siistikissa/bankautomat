@@ -8,8 +8,6 @@ namespace Ui {
 class PinUI;
 }
 
-using namespace std;
-
 class PinUI : public QWidget
 {
     Q_OBJECT
@@ -35,7 +33,7 @@ private slots:
 
 private:
     QSoundEffect beep;
-    string input;
+    std::string input;
     int state=0;
     Ui::PinUI *ui;
 };
