@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include "pinui.h"
+#include "kuitti.h"
 #include <QMainWindow>
+#include <QSoundEffect>
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -19,14 +21,31 @@ public:
 
 public slots:
     void createPinUI();
+    void createKuitti();
 
 private slots:
     void on_RFIDButton_clicked();
     void on_PINUIButton_clicked();
+    void on_KuittiButton_clicked();
+    void on_btnA_clicked();
+    void on_btnB_clicked();
+    void on_btnC_clicked();
+    void on_btnD_clicked();
+    void on_btnE_clicked();
+    void on_btnF_clicked();
+    void on_btnG_clicked();
+    void on_btnH_clicked();
 
 private:
+    void vaihe1();
+    void vaihe2();
+    void vaihe3();
+    void naytaTapahtumat();
+    void naytaSaldo();
+    void nostaRahaa();
     Ui::MainWindow *ui;
-    void createBankUI();
+    QSoundEffect beep;
+    QSoundEffect lowbeep;
     bool RFIDpressed = false;
 };
 #endif // MAINWINDOW_H
