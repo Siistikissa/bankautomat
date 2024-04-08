@@ -60,7 +60,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Enter your PIN:</string>
+    <string>Syötä PIN-koodi:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn1">

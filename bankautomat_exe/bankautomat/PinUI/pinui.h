@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QSoundEffect>
+#include <stdbool.h>
+#include <QDebug>
 
 namespace Ui {
 class PinUI;
@@ -33,8 +35,10 @@ private slots:
 
 private:
     QSoundEffect beep;
+    QSoundEffect lowbeep;
     std::string input;
     int state=1;
+    bool playingSound=true;
     Ui::PinUI *ui;
 };
 
