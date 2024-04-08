@@ -34,7 +34,7 @@ private slots:
 private:
     QSoundEffect beep;
     std::string input;
-    int state=0;
+    int state=1;
     Ui::PinUI *ui;
 };
 

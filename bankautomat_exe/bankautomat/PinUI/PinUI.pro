@@ -1,4 +1,5 @@
 QT += widgets
+QT += multimedia
 
 TEMPLATE = lib
 DEFINES += PINUI_LIBRARY
