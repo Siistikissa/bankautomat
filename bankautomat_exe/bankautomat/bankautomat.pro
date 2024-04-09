@@ -27,10 +27,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += C://projektit//pankkiautomaatti//SPL_Group8//bankautomat_exe//bankautomat//PinUI
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PinUI/build/release/ -lPinUI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PinUI/build/debug/ -lPinUI
+INCLUDEPATH += C://Users//keran//Documents//OAMK//SPL_Group8//bankautomat_exe//bankautomat//PinUI
 
 INCLUDEPATH += $$PWD/PinUI/build
 DEPENDPATH += $$PWD/PinUI/build
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PinUI/build/release/ -lPinUI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PinUI/build/debug/ -lPinUI
+else:unix: LIBS += -L$$PWD/PinUI/build/ -lPinUI
+
+INCLUDEPATH += $$PWD/PinUI
+DEPENDPATH += $$PWD/PinUI
