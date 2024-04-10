@@ -12,14 +12,13 @@ class RESTAPI_EXPORT Restapi : public QObject
     Q_OBJECT
 public:
     Restapi();
-    QString lastReply;
     //test
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);
     //real
     void getSerial();
     void getPin();
-    void getAccount();
+    void getAccount(QString accountId);
     void getTransactions();
     void postWithdraw(QJsonObject jsonObj);
 signals:

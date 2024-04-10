@@ -26,14 +26,7 @@ void MainWindow::vaihe1()
 {
     qDebug()<<"vaihe1()..";
     ui->lineEdit->setText("         Syötä kortti");
-    ui->btnA->setText("");
-    ui->btnB->setText("");
-    ui->btnC->setText("");
-    ui->btnD->setText("");
-    ui->btnE->setText("");
-    ui->btnF->setText("");
-    ui->btnG->setText("");
-    ui->btnH->setText("");
+    clearUiButtons();
 }
 
 void MainWindow::vaihe2()
@@ -52,6 +45,9 @@ void MainWindow::vaihe3()
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::naytaSaldo);
+    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::naytaTapahtumat);
+    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::naytaSaldo);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::naytaTapahtumat);
     connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
@@ -63,8 +59,11 @@ void MainWindow::vaihe3()
 
 void MainWindow::naytaSaldo()
 {
+    connect(api, &Restapi::replySet, this, &MainWindow::setUiTextBalance);
+    QString mockid = "1";
+    api->getAccount(mockid);
     qDebug()<<"naytaSaldo()..";
-    ui->lineEdit->setText("         Tilin saldo:");
+    //ui->lineEdit->setText("         Tilin saldo:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("");
@@ -95,6 +94,22 @@ void MainWindow::nostaRahaa()
     ui->btnF->setText("90€");
     ui->btnG->setText("140€");
     ui->btnH->setText("240€");
+}
+
+void MainWindow::clearUiButtons()
+{
+    ui->btnA->setText("");
+    ui->btnB->setText("");
+    ui->btnC->setText("");
+    ui->btnD->setText("");
+    ui->btnE->setText("");
+    ui->btnF->setText("");
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+void MainWindow::setUiTextBalance(QString lastReply)
+{
+    ui->lineEdit->setText(lastReply);
 }
 
 void MainWindow::createPinUI()

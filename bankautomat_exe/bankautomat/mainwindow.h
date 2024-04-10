@@ -45,9 +45,12 @@ private:
     void naytaTapahtumat();
     void naytaSaldo();
     void nostaRahaa();
+    void clearUiButtons();
+    void setUiTextBalance(QString lastReply);
     Ui::MainWindow *ui;
     QSoundEffect beep;
     QSoundEffect lowbeep;
     bool RFIDpressed = false;
+    Restapi *api = new Restapi;
 };
 #endif // MAINWINDOW_H
