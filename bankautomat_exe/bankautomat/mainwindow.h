@@ -3,9 +3,11 @@
 
 #include "pinui.h"
 #include "kuitti.h"
+#include "restapi.h"
 #include <QMainWindow>
 #include <QSoundEffect>
 #include <QDebug>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
