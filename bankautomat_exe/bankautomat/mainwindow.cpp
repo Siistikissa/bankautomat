@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 void MainWindow::vaihe1()
 {
     qDebug()<<"vaihe1()..";
-    ui->lineEdit->setText("         Syötä kortti");
+    ui->lineEdit->setText("Syötä kortti");
     ui->btnA->setText("");
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -42,13 +42,13 @@ void MainWindow::vaihe2()
     ui->btnA->setText("Keskeytä tapahtuma");
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::vaihe1);
     createPinUI();
-    ui->lineEdit->setText("         Syötä PIN-koodi, 3 yritystä jäljellä");
+    ui->lineEdit->setText("Syötä PIN-koodi, 3 yritystä jäljellä");
 }
 
 void MainWindow::vaihe3()
 {
     qDebug()<<"vaihe3()..";
-    ui->lineEdit->setText("         Valitse toiminto");
+    ui->lineEdit->setText("Valitse toiminto");
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
@@ -64,7 +64,7 @@ void MainWindow::vaihe3()
 void MainWindow::naytaSaldo()
 {
     qDebug()<<"naytaSaldo()..";
-    ui->lineEdit->setText("         Tilin saldo:");
+    ui->lineEdit->setText("Tilin saldo:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("");
@@ -75,7 +75,7 @@ void MainWindow::naytaSaldo()
 void MainWindow::naytaTapahtumat()
 {
     qDebug()<<"naytaTapahtumat()..";
-    ui->lineEdit->setText("         Tilitapahtumat:");
+    ui->lineEdit->setText("Tilitapahtumat:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("Siirry vanhempiin");
@@ -86,7 +86,7 @@ void MainWindow::naytaTapahtumat()
 void MainWindow::nostaRahaa()
 {
     qDebug()<<"nostaRahaa()..";
-    ui->lineEdit->setText("         Valitse summa");
+    ui->lineEdit->setText("Valitse summa");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("20€");
@@ -112,7 +112,6 @@ void MainWindow::createKuitti()
 void MainWindow::on_RFIDButton_clicked()
 {
     qDebug()<<"*kortti syötetty koneeseen..";
-    RFIDpressed = true;
     vaihe2();
 }
 
