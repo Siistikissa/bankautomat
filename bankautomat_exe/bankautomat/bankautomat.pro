@@ -27,14 +27,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += C://Users//keran//Documents//OAMK//SPL_Group8//bankautomat_exe//bankautomat//PinUI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/release/ -lPinUI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/debug/ -lPinUI
 
-INCLUDEPATH += $$PWD/PinUI/build
-DEPENDPATH += $$PWD/PinUI/build
+INCLUDEPATH += $$PWD/Pin/PinUI
+DEPENDPATH += $$PWD/Pin/PinUI
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PinUI/build/release/ -lPinUI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PinUI/build/debug/ -lPinUI
-else:unix: LIBS += -L$$PWD/PinUI/build/ -lPinUI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/release/ -lrestapi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/debug/ -lrestapi
 
-INCLUDEPATH += $$PWD/PinUI
-DEPENDPATH += $$PWD/PinUI
+INCLUDEPATH += $$PWD/restapi/restapi
+DEPENDPATH += $$PWD/restapi/restapi

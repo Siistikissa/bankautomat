@@ -6,9 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    beep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\beep.wav"));
+    QDir directory("../bankautomat/");
+    QString pathToBeep = directory.absoluteFilePath("beep.wav");
+    QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
+    beep.setSource(QUrl::fromLocalFile(pathToBeep));
     beep.setVolume(1.0);
-    lowbeep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\lowbeep.wav"));
+    lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
     vaihe1();
