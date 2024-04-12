@@ -39,12 +39,12 @@ private slots:
     void on_btnH_clicked();
 
 private:
-    void vaihe1();
-    void vaihe2();
-    void vaihe3();
-    void naytaTapahtumat();
-    void naytaSaldo();
-    void nostaRahaa();
+    void startScreen();
+    void pinScreen();
+    void mainScreen();
+    void showBalance();
+    void showTransactions();
+    void showWithdraw();
     void clearUiButtons();
     void setUiTextBalance(QString lastReply);
     Ui::MainWindow *ui;

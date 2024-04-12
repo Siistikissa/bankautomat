@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
-    vaihe1();
+    startScreen();
 }
 
 MainWindow::~MainWindow()
@@ -22,34 +22,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::vaihe1()
+void MainWindow::startScreen()
 {
-    qDebug()<<"vaihe1()..";
+    qDebug()<<"startScreen()..";
     ui->lineEdit->setText("         Syötä kortti");
     clearUiButtons();
 }
 
-void MainWindow::vaihe2()
+void MainWindow::pinScreen()
 {
-    qDebug()<<"vaihe2()..";
+    qDebug()<<"pinScreen()..";
     ui->btnA->setText("Keskeytä tapahtuma");
-    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::vaihe1);
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
     createPinUI();
     ui->lineEdit->setText("         Syötä PIN-koodi, 3 yritystä jäljellä");
 }
 
-void MainWindow::vaihe3()
+void MainWindow::mainScreen()
 {
-    qDebug()<<"vaihe3()..";
+    qDebug()<<"mainScreen()..";
     ui->lineEdit->setText("         Valitse toiminto");
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
-    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::naytaSaldo);
-    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::naytaTapahtumat);
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
+    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
     disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::naytaSaldo);
-    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::naytaTapahtumat);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
+    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
     connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
     ui->btnE->setText("");
     ui->btnF->setText("");
@@ -57,26 +57,26 @@ void MainWindow::vaihe3()
     ui->btnH->setText("");
 }
 
-void MainWindow::naytaSaldo()
+void MainWindow::showBalance()
 {
     connect(api, &Restapi::replySet, this, &MainWindow::setUiTextBalance);
     QString mockid = "1";
     api->getAccount(mockid);
-    qDebug()<<"naytaSaldo()..";
+    qDebug()<<"showBalance()..";
     //ui->lineEdit->setText("         Tilin saldo:");
     ui->btnB->setText("Takaisin");
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("");
     ui->btnD->setText("");
 }
 
 
-void MainWindow::naytaTapahtumat()
+void MainWindow::showTransactions()
 {
-    qDebug()<<"naytaTapahtumat()..";
+    qDebug()<<"showTransactions()..";
     ui->lineEdit->setText("         Tilitapahtumat:");
     ui->btnB->setText("Takaisin");
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("Siirry vanhempiin");
     ui->btnD->setText("Siirry uudempiin");
 }
@@ -87,7 +87,7 @@ void MainWindow::nostaRahaa()
     qDebug()<<"nostaRahaa()..";
     ui->lineEdit->setText("         Valitse summa");
     ui->btnB->setText("Takaisin");
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("20€");
     ui->btnD->setText("40€");
     ui->btnE->setText("60€");
@@ -128,13 +128,13 @@ void MainWindow::on_RFIDButton_clicked()
 {
     qDebug()<<"*kortti syötetty koneeseen..";
     RFIDpressed = true;
-    vaihe2();
+    pinScreen();
 }
 
 void MainWindow::on_PINUIButton_clicked()
 {
     qDebug()<<"*PIN syötetty oikein..";
-    vaihe3();
+    mainScreen();
 }
 
 void MainWindow::on_KuittiButton_clicked()
