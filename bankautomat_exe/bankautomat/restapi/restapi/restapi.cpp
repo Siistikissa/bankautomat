@@ -21,13 +21,13 @@ void Restapi::postCustomer(QJsonObject jsonObj)
 
 }
 
-void Restapi::getSerial()
+void Restapi::postSerial(QJsonObject jsonObj)
 {
-    getConnect("http://localhost:3000/accounts");
+    postConnect("http://localhost:3000/cards", jsonObj);
     connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
-void Restapi::getPin()
+bool Restapi::getPin()
 {
     getConnect("http://localhost:3000/accounts");
     connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
@@ -121,6 +121,7 @@ void Restapi::postConnect(QString site_url, QJsonObject jsonObj)
 void Restapi::postResponse(QNetworkReply *reply)
 {
     response_data=reply->readAll();
+    emit replySet(response_data);
     //qDebug()<<response_data;
     reply->deleteLater();
     postManager->deleteLater();

@@ -16,8 +16,8 @@ public:
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);
     //real
-    void getSerial();
-    void getPin();
+    void postSerial();
+    bool postPin();
     void getAccount(QString accountId);
     void getTransactions();
     void postWithdraw(QJsonObject jsonObj);
@@ -29,7 +29,7 @@ private slots:
     void postResponse(QNetworkReply *reply);
 
 private:
-
+    int currentCardId;
     void getResponseEnd(QString responseData);
     QJsonArray getParserJson(QNetworkReply *reply);
     QString getParserQstring(QJsonArray json_array);

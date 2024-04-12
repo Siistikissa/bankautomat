@@ -47,10 +47,10 @@ void MainWindow::mainScreen()
     ui->btnD->setText("Nosto");
     disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
     disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
-    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
+    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
-    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::nostaRahaa);
+    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
     ui->btnE->setText("");
     ui->btnF->setText("");
     ui->btnG->setText("");
@@ -82,9 +82,9 @@ void MainWindow::showTransactions()
 }
 
 
-void MainWindow::nostaRahaa()
+void MainWindow::showWithdraw()
 {
-    qDebug()<<"nostaRahaa()..";
+    qDebug()<<"showWithdraw()..";
     ui->lineEdit->setText("Valitse summa");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
