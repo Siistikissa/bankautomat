@@ -1,6 +1,6 @@
 QT       += core gui
-QT       += multimedia
-QT       += serialport
+QT       += multimedia serialport
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -17,12 +17,12 @@ SOURCES += \
 
 HEADERS += \
     kuitti.h \
-    mainwindow.h \
-    rfid.h
+    rfid.h \
+    mainwindow.h
 
 FORMS += \
-    rfid.ui\
     kuitti.ui \
+    rfid.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -30,14 +30,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += C://bank//SPL_Group8-main//bankautomat_exe//bankautomat//PinUI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/release/ -lPinUI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/debug/ -lPinUI
 
-INCLUDEPATH += $$PWD/PinUI/build
-DEPENDPATH += $$PWD/PinUI/build
+INCLUDEPATH += $$PWD/Pin/PinUI
+DEPENDPATH += $$PWD/Pin/PinUI
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-PinUI-Desktop_Qt_6_6_3_MinGW_64_bit-Debug/release/ -lPinUI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-PinUI-Desktop_Qt_6_6_3_MinGW_64_bit-Debug/debug/ -lPinUI
-else:unix: LIBS += -L$$PWD/build-PinUI-Desktop_Qt_6_6_3_MinGW_64_bit-Debug/ -lPinUI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/release/ -lrestapi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/debug/ -lrestapi
 
-INCLUDEPATH += $$PWD/PinUI
-DEPENDPATH += $$PWD/PinUI
+INCLUDEPATH += $$PWD/restapi/restapi
+DEPENDPATH += $$PWD/restapi/restapi

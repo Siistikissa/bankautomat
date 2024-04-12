@@ -1,12 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "rfid.h"
 #include "pinui.h"
 #include "kuitti.h"
+#include "restapi.h"
+#include "rfid.h"
 #include <QMainWindow>
 #include <QSoundEffect>
 #include <QDebug>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,7 +26,6 @@ public slots:
     void createPinUI();
     void createKuitti();
     void createRfid();
-
 private slots:
     void on_RFIDButton_clicked();
     void on_PINUIButton_clicked();
@@ -39,7 +40,6 @@ private slots:
     void on_btnH_clicked();
 
 private:
-
     void vaihe1();
     void vaihe2();
     void vaihe3();
@@ -50,6 +50,5 @@ private:
     QSoundEffect beep;
     QSoundEffect lowbeep;
     bool RFIDpressed = false;
-    QSerialPort *PORT;
 };
 #endif // MAINWINDOW_H

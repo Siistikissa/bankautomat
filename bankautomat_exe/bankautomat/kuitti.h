@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSoundEffect>
+#include <QDir>
 
 namespace Ui {
 class Kuitti;

@@ -6,12 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    beep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\beep.wav"));
+    QDir directory("../bankautomat/");
+    QString pathToBeep = directory.absoluteFilePath("beep.wav");
+    QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
+    beep.setSource(QUrl::fromLocalFile(pathToBeep));
     beep.setVolume(1.0);
-    lowbeep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\lowbeep.wav"));
+    lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
-    connect(ui->RFIDButton_2, &QPushButton::clicked, this, &MainWindow::createRfid);
+    connect(ui->RFIDButton_2,&QPushButton::clicked, this, &MainWindow::createRfid);
     vaihe1();
 }
 
@@ -23,7 +26,7 @@ MainWindow::~MainWindow()
 void MainWindow::vaihe1()
 {
     qDebug()<<"vaihe1()..";
-    ui->lineEdit->setText("         Syötä kortti");
+    ui->lineEdit->setText("Syötä kortti");
     ui->btnA->setText("");
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -40,13 +43,13 @@ void MainWindow::vaihe2()
     ui->btnA->setText("Keskeytä tapahtuma");
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::vaihe1);
     createPinUI();
-    ui->lineEdit->setText("         Syötä PIN-koodi, 3 yritystä jäljellä");
+    ui->lineEdit->setText("Syötä PIN-koodi, 3 yritystä jäljellä");
 }
 
 void MainWindow::vaihe3()
 {
     qDebug()<<"vaihe3()..";
-    ui->lineEdit->setText("         Valitse toiminto");
+    ui->lineEdit->setText("Valitse toiminto");
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
@@ -62,7 +65,7 @@ void MainWindow::vaihe3()
 void MainWindow::naytaSaldo()
 {
     qDebug()<<"naytaSaldo()..";
-    ui->lineEdit->setText("         Tilin saldo:");
+    ui->lineEdit->setText("Tilin saldo:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("");
@@ -73,7 +76,7 @@ void MainWindow::naytaSaldo()
 void MainWindow::naytaTapahtumat()
 {
     qDebug()<<"naytaTapahtumat()..";
-    ui->lineEdit->setText("         Tilitapahtumat:");
+    ui->lineEdit->setText("Tilitapahtumat:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("Siirry vanhempiin");
@@ -84,7 +87,7 @@ void MainWindow::naytaTapahtumat()
 void MainWindow::nostaRahaa()
 {
     qDebug()<<"nostaRahaa()..";
-    ui->lineEdit->setText("         Valitse summa");
+    ui->lineEdit->setText("Valitse summa");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::vaihe3);
     ui->btnC->setText("20€");
@@ -106,8 +109,7 @@ void MainWindow::createKuitti()
     Kuitti* KuittiWindow = new Kuitti;
     KuittiWindow->show();
 }
-void MainWindow::createRfid()
-{
+void MainWindow::createRfid() {
     Rfid* RfidWindow = new Rfid;
     RfidWindow->show();
 }

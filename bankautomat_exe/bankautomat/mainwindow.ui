@@ -2813,6 +2813,9 @@
     <property name="text">
      <string/>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
@@ -5988,7 +5991,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>590</y>
+      <y>580</y>
       <width>358</width>
       <height>29</height>
      </rect>
@@ -6436,7 +6439,7 @@
      </palette>
     </property>
     <property name="text">
-     <string>Avaa sarjaporttiväylä</string>
+     <string>Avaa sarjaporttiyhteys</string>
     </property>
    </widget>
   </widget>
