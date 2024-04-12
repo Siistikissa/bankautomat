@@ -35,7 +35,7 @@ void MainWindow::pinScreen()
     ui->btnA->setText("Keskeytä tapahtuma");
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
     createPinUI();
-    ui->lineEdit->setText("         Syötä PIN-koodi, 3 yritystä jäljellä");
+    ui->lineEdit->setText("Syötä PIN-koodi, 3 yritystä jäljellä");
 }
 
 void MainWindow::mainScreen()
@@ -85,7 +85,7 @@ void MainWindow::showTransactions()
 void MainWindow::nostaRahaa()
 {
     qDebug()<<"nostaRahaa()..";
-    ui->lineEdit->setText("         Valitse summa");
+    ui->lineEdit->setText("Valitse summa");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("20€");
