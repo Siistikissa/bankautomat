@@ -12,7 +12,6 @@ class RESTAPI_EXPORT Restapi : public QObject
     Q_OBJECT
 public:
     Restapi();
-    QString lastReply;
     //test
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);

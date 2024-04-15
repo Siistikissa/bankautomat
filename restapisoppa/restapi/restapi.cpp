@@ -61,7 +61,6 @@ void Restapi::getResponse(QNetworkReply *reply)
 
 void Restapi::getResponseEnd(QString responseData)
 {
-    lastReply = responseData;
     emit replySet(responseData);
     reply->deleteLater();
     getManager->deleteLater();

@@ -21,21 +21,23 @@ void Restapi::postCustomer(QJsonObject jsonObj)
 
 }
 
-void Restapi::getSerial()
+void Restapi::postSerial(QJsonObject jsonObj)
+{
+    postConnect("http://localhost:3000/cards", jsonObj);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
+}
+
+bool Restapi::getPin()
 {
     getConnect("http://localhost:3000/accounts");
     connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
-void Restapi::getPin()
+void Restapi::getAccount(QString accountId)
 {
-    getConnect("http://localhost:3000/accounts");
-    connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
-}
-
-void Restapi::getAccount()
-{
-    getConnect("http://localhost:3000/accounts");
+    getConnect("http://localhost:3000/accounts/"+accountId);
+    targets.push_back("balance");
+    targets.push_back("credit");
     connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
@@ -61,7 +63,6 @@ void Restapi::getResponse(QNetworkReply *reply)
 
 void Restapi::getResponseEnd(QString responseData)
 {
-    lastReply = responseData;
     emit replySet(responseData);
     reply->deleteLater();
     getManager->deleteLater();
@@ -71,7 +72,7 @@ void Restapi::getResponseEnd(QString responseData)
 QJsonArray Restapi::getParserJson(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    qDebug()<<"DATA : "+response_data;
+    //qDebug()<<"DATA : "+response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     return json_array;
@@ -82,22 +83,18 @@ QString Restapi::getParserQstring(QJsonArray json_array)
     QString data;
     //parsing json to qstring
     for(auto i = targets.begin(); i != targets.end(); i++){
-        qDebug() << "ring 1 : " << *i;
-
         for (const QJsonValue &value : json_array) {
             QJsonObject json_obj = value.toObject();
 
-            qDebug() << "variant type r2 : " <<  json_obj[*i].toVariant();
             if (i != targets.begin() && i != targets.end()){
                 data.append(", ");
             }
             QVariant variant = json_obj[*i].toVariant();
             data.append(variant.value<QString>());
-            qDebug() << "ring 2 : " << data;
         }
     }
 
-    qDebug() << "QString data : " << data;
+    //qDebug() << "QString data : " << data;
     return data;
 }
 
@@ -109,7 +106,7 @@ void Restapi::getConnect(QString site_url)
     getManager = new QNetworkAccessManager(this);
 
     reply = getManager->get(request);
-    qDebug() << "Reply : " << reply;
+    //qDebug() << "Reply : " << reply;
 }
 
 void Restapi::postConnect(QString site_url, QJsonObject jsonObj)
@@ -124,7 +121,8 @@ void Restapi::postConnect(QString site_url, QJsonObject jsonObj)
 void Restapi::postResponse(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    qDebug()<<response_data;
+    emit replySet(response_data);
+    //qDebug()<<response_data;
     reply->deleteLater();
     postManager->deleteLater();
 }
