@@ -123,6 +123,20 @@ void MainWindow::createKuitti()
     Kuitti* KuittiWindow = new Kuitti;
     KuittiWindow->show();
 }
+void MainWindow::createRfid() {
+    Rfid* RfidWindow = new Rfid;
+    RfidWindow->show();
+}
+{
+    PinUI* PinWindow = new PinUI;
+    PinWindow->show();
+}
+
+void MainWindow::createKuitti()
+{
+    Kuitti* KuittiWindow = new Kuitti;
+    KuittiWindow->show();
+}
 
 void MainWindow::on_RFIDButton_clicked()
 {
