@@ -10,7 +10,7 @@ Kuitti::Kuitti(QWidget *parent) :
 {
         ui->setupUi(this);
 
-    QPixmap image("C://Users//sanin//OneDrive//Kuvat//ripped_receipt_1.png");
+    QPixmap image("ripped_receipt_1.png");
 
     QImage img(image.size(), QImage::Format_ARGB32_Premultiplied);
     img.fill(Qt::transparent);
