@@ -12,14 +12,13 @@ class RESTAPI_EXPORT Restapi : public QObject
     Q_OBJECT
 public:
     Restapi();
-    QString lastReply;
     //test
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);
     //real
-    void getSerial();
-    void getPin();
-    void getAccount();
+    void postSerial();
+    bool postPin();
+    void getAccount(QString accountId);
     void getTransactions();
     void postWithdraw(QJsonObject jsonObj);
 signals:
@@ -30,7 +29,7 @@ private slots:
     void postResponse(QNetworkReply *reply);
 
 private:
-
+    int currentCardId;
     void getResponseEnd(QString responseData);
     QJsonArray getParserJson(QNetworkReply *reply);
     QString getParserQstring(QJsonArray json_array);
