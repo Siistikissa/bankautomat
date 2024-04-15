@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 void MainWindow::startScreen()
 {
     qDebug()<<"startScreen()..";
-    ui->lineEdit->setText("         Syötä kortti");
+    ui->lineEdit->setText("Syötä kortti");
     clearUiButtons();
 }
 
@@ -42,7 +42,7 @@ void MainWindow::mainScreen()
 {
     disconnectAllFunctions();
     qDebug()<<"mainScreen()..";
-    ui->lineEdit->setText("         Valitse toiminto");
+    ui->lineEdit->setText("Valitse toiminto");
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
@@ -62,7 +62,7 @@ void MainWindow::showBalance()
     QString mockid = "1";
     api->getAccount(mockid);
     qDebug()<<"showBalance()..";
-    //ui->lineEdit->setText("         Tilin saldo:");
+    //ui->lineEdit->setText("Tilin saldo:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("");
@@ -74,7 +74,7 @@ void MainWindow::showTransactions()
 {
     disconnectAllFunctions();
     qDebug()<<"showTransactions()..";
-    ui->lineEdit->setText("         Tilitapahtumat:");
+    ui->lineEdit->setText("Tilitapahtumat:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("Siirry vanhempiin");
