@@ -40,6 +40,7 @@ private slots:
     void on_btnH_clicked();
 
 private:
+    void disconnectAllFunctions();
     void startScreen();
     void pinScreen();
     void mainScreen();

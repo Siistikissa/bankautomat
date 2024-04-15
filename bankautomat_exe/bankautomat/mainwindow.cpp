@@ -40,14 +40,12 @@ void MainWindow::pinScreen()
 
 void MainWindow::mainScreen()
 {
+    disconnectAllFunctions();
     qDebug()<<"mainScreen()..";
     ui->lineEdit->setText("         Valitse toiminto");
     ui->btnB->setText("Tilin saldo");
     ui->btnC->setText("Tilitapahtumat");
     ui->btnD->setText("Nosto");
-    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
-    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
-    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
     connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
@@ -59,6 +57,7 @@ void MainWindow::mainScreen()
 
 void MainWindow::showBalance()
 {
+    disconnectAllFunctions();
     connect(api, &Restapi::replySet, this, &MainWindow::setUiTextBalance);
     QString mockid = "1";
     api->getAccount(mockid);
@@ -73,6 +72,7 @@ void MainWindow::showBalance()
 
 void MainWindow::showTransactions()
 {
+    disconnectAllFunctions();
     qDebug()<<"showTransactions()..";
     ui->lineEdit->setText("         Tilitapahtumat:");
     ui->btnB->setText("Takaisin");
@@ -84,6 +84,7 @@ void MainWindow::showTransactions()
 
 void MainWindow::showWithdraw()
 {
+    disconnectAllFunctions();
     qDebug()<<"showWithdraw()..";
     ui->lineEdit->setText("Valitse summa");
     ui->btnB->setText("Takaisin");
@@ -127,16 +128,7 @@ void MainWindow::createRfid() {
     Rfid* RfidWindow = new Rfid;
     RfidWindow->show();
 }
-{
-    PinUI* PinWindow = new PinUI;
-    PinWindow->show();
-}
 
-void MainWindow::createKuitti()
-{
-    Kuitti* KuittiWindow = new Kuitti;
-    KuittiWindow->show();
-}
 
 void MainWindow::on_RFIDButton_clicked()
 {
@@ -202,5 +194,13 @@ void MainWindow::on_btnH_clicked()
 {
     beep.play();
     qDebug()<<"H-toimintoa painettu..";
+}
+
+void MainWindow::disconnectAllFunctions()
+{
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
+    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
+    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
 }
 
