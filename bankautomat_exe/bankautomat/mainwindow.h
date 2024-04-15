@@ -4,6 +4,7 @@
 #include "pinui.h"
 #include "kuitti.h"
 #include "restapi.h"
+#include "rfid.h"
 #include <QMainWindow>
 #include <QSoundEffect>
 #include <QDebug>
@@ -24,7 +25,7 @@ public:
 public slots:
     void createPinUI();
     void createKuitti();
-
+    void createRfid();
 private slots:
     void on_RFIDButton_clicked();
     void on_PINUIButton_clicked();

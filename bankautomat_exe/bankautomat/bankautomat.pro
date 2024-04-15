@@ -1,5 +1,5 @@
 QT       += core gui
-QT       += multimedia
+QT       += multimedia serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,15 +11,18 @@ CONFIG += c++17
 
 SOURCES += \
     kuitti.cpp \
+    rfid.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     kuitti.h \
+    rfid.h \
     mainwindow.h
 
 FORMS += \
     kuitti.ui \
+    rfid.ui \
     mainwindow.ui
 
 # Default rules for deployment.

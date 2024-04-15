@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
+    connect(ui->RFIDButton_2,&QPushButton::clicked, this, &MainWindow::createRfid);
     vaihe1();
 }
 
@@ -98,6 +99,20 @@ void MainWindow::nostaRahaa()
 }
 
 void MainWindow::createPinUI()
+{
+    PinUI* PinWindow = new PinUI;
+    PinWindow->show();
+}
+
+void MainWindow::createKuitti()
+{
+    Kuitti* KuittiWindow = new Kuitti;
+    KuittiWindow->show();
+}
+void MainWindow::createRfid() {
+    Rfid* RfidWindow = new Rfid;
+    RfidWindow->show();
+}
 {
     PinUI* PinWindow = new PinUI;
     PinWindow->show();
