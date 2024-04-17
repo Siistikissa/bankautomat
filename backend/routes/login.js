@@ -7,9 +7,9 @@ const dotenv = require('dotenv');
 
 router.post('/', 
   function(request, response) {
-    if(request.body.username && request.body.password){
-      const user = request.body.username;
-      const pass = request.body.password;
+    if(request.body.serial && request.body.pin){
+      const user = request.body.serial;
+      const pass = request.body.pin;
       
         login.checkPassword(user, function(dbError, dbResult) {
           if(dbError){
@@ -20,7 +20,7 @@ router.post('/',
               bcrypt.compare(pass,dbResult[0].pin, function(err,compareResult) {
                 if(compareResult) {
                   console.log("success");
-                  const token = generateAccessToken({ username: user });
+                  const token = generateAccessToken({ serial: user });
                   response.send(token);
                 }
                 else {

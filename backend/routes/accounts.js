@@ -30,6 +30,7 @@ router.post('/',
 function(request, response) {
   accounts.add(request.body, function(err, dbResult) {
     if (err) {
+      console.log("account post error : "+err)
       response.json(err);
     } else {
       response.json(dbResult);

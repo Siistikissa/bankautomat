@@ -30,10 +30,11 @@ router.get('/:id',
 
 router.post('/', 
 function(request, response) {
-  cards.add(request.body, function(err, dbResult) {
+  cards.searchCard(request.body.serial, function(err, dbResult) {
     if (err) {
       response.json(err);
     } else {
+      console.log(dbResult);
       response.json(dbResult);
     }
   });

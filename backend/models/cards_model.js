@@ -7,10 +7,10 @@ const cards = {
   getById: function(id, callback) {
     return db.query('select * from cards where ca_id=?', [id], callback);
   },
-  add: function(cards, callback) {
+  searchCard: function(cards, callback) {
     return db.query(
-      'insert into cards (pin,cu_id,serial) values(?,?,?)',
-      [cards.pin, cards.cu_id, cards.serial],
+      'select cu_id from cards where serial = ?',
+      [cards],
       callback
     );
   },
