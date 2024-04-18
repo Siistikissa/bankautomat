@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
+    connect(ui->RFIDButton_2, &QPushButton::clicked, this, &MainWindow::createRfid);
     startScreen();
 }
 
