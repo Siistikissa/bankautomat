@@ -9,8 +9,8 @@ const accounts = {
   },
   add: function(accounts, callback) {
     return db.query(
-      'insert into accounts (balance,credit,cu_id,ca_id) values(?,?,?,?)',
-      [accounts.balance, accounts.credit, accounts.cu_id, accounts.ca_id],
+      'select * from accounts where ca_id = ?',
+      [accounts.cu_id],
       callback
     );
   },

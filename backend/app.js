@@ -20,12 +20,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/login', loginRouter);
-
+app.use(authenticateToken);
 app.use('/transactions', transactionsRouter);
 app.use('/customers', customersRouter);
 app.use('/cards', cardsRouter);
 app.use('/accounts', accountsRouter);
-app.use(authenticateToken);
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
