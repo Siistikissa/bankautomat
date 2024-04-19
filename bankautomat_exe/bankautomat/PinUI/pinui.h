@@ -18,6 +18,8 @@ public:
     explicit PinUI(QWidget *parent = nullptr);
     ~PinUI();
 
+signals:
+    void sendPin(QString pin);
 private slots:
     void on_pushButton_clicked();
     void on_btnEnter_clicked();
@@ -34,9 +36,10 @@ private slots:
     void on_btn9_clicked();
 
 private:
+    void buttonInput(char buttonNum);
     QSoundEffect beep;
     QSoundEffect lowbeep;
-    std::string input;
+    QString input;
     int state=1;
     bool playingSound=true;
     Ui::PinUI *ui;

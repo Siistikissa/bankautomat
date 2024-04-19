@@ -16,11 +16,18 @@ public:
     void getAllAccounts();
     void postCustomer(QJsonObject jsonObj);
     //real
-    void postSerial();
-    bool postPin();
-    void getAccount(QString accountId);
-    void getTransactions();
+    //takes serial and pin. returns token on success. on error return false.
+    void postLogin(QJsonObject jsonObj);
+    //takes serial. returns cu_id.
+    void getAccountId(QJsonObject jsonObj);
+    //takes cu_id. returns ac_id, balance and credit.
+    void getAccountBalance(QJsonObject jsonObj);
+    //takes ac_id, start, stop. returns end-start amont of transactions.
+    void getTransactions(QJsonObject jsonObj);
+    //takes type, newAmount, cu_id, transaction and ac_id. returns query.
     void postWithdraw(QJsonObject jsonObj);
+    //set this token to the token got from postLogin().
+    QString token;
 signals:
     void replySet(QString lastReply);
 
@@ -29,7 +36,6 @@ private slots:
     void postResponse(QNetworkReply *reply);
 
 private:
-    int currentCardId;
     void getResponseEnd(QString responseData);
     QJsonArray getParserJson(QNetworkReply *reply);
     QString getParserQstring(QJsonArray json_array);
@@ -38,9 +44,8 @@ private:
     void postConnect(QString site_url, QJsonObject jsonObj);
 
     std::vector<QString> targets;
-
-    QNetworkAccessManager *getManager;
-    QNetworkAccessManager *postManager;
+    QJsonObject jsonObj;
+    QNetworkAccessManager *apiManager;
     QNetworkReply *reply;
     QByteArray response_data;
 };

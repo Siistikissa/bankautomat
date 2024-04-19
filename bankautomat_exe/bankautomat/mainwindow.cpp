@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //setup paths to sounds
     QDir directory("../bankautomat/");
     QString pathToBeep = directory.absoluteFilePath("beep.wav");
     QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
@@ -13,8 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     beep.setVolume(1.0);
     lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
+    //connect debug buttons
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
     connect(ui->RFIDButton_2, &QPushButton::clicked, this, &MainWindow::createRfid);
+    //connect rfid reader and start the aplication
+    connect(rfid, &Rfid::cardNumber, this, &MainWindow::pinScreen);
     startScreen();
 }
 
@@ -30,9 +34,10 @@ void MainWindow::startScreen()
     clearUiButtons();
 }
 
-void MainWindow::pinScreen()
+void MainWindow::pinScreen(QString cNum)
 {
     qDebug()<<"pinScreen()..";
+    serial = cNum;
     ui->btnA->setText("Keskeytä tapahtuma");
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
     createPinUI();
@@ -60,10 +65,8 @@ void MainWindow::showBalance()
 {
     disconnectAllFunctions();
     connect(api, &Restapi::replySet, this, &MainWindow::setUiTextBalance);
-    QString mockid = "1";
-    api->getAccount(mockid);
+    //api->getAccountBalance(mockid);
     qDebug()<<"showBalance()..";
-    //ui->lineEdit->setText("Tilin saldo:");
     ui->btnB->setText("Takaisin");
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("");
@@ -114,9 +117,30 @@ void MainWindow::setUiTextBalance(QString lastReply)
     ui->lineEdit->setText(lastReply);
 }
 
+void MainWindow::checkPassword(QString tryPin)
+{
+    pin = tryPin;
+    api->postLogin(serial,pin);
+}
+
+void MainWindow::clearApiData()
+{
+    serial.clear();
+    pin.clear();
+    type.clear();
+    cu_id = 0 ;
+    ac_id = 0;
+    newAmount = 0;
+    start = 0;
+    stop = 0;
+    transaction = 0;
+
+}
+
 void MainWindow::createPinUI()
 {
     PinUI* PinWindow = new PinUI;
+    connect(PinWindow, &PinUI::sendPin, this, &MainWindow::mainScreen);
     PinWindow->show();
 }
 
@@ -135,7 +159,7 @@ void MainWindow::on_RFIDButton_clicked()
 {
     qDebug()<<"*kortti syötetty koneeseen..";
     RFIDpressed = true;
-    pinScreen();
+    //pinScreen();
 }
 
 void MainWindow::on_PINUIButton_clicked()

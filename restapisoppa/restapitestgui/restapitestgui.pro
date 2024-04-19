@@ -23,8 +23,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-restapi-qmaketesti-Debug/release/ -lrestapi
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-restapi-qmaketesti-Debug/debug/ -lrestapi
 
-INCLUDEPATH += $$PWD/../restapi
-DEPENDPATH += $$PWD/../restapi
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../bankautomat_exe/bankautomat/restapi/build-restapi-qmaketesti-Debug/release/ -lrestapi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../bankautomat_exe/bankautomat/restapi/build-restapi-qmaketesti-Debug/debug/ -lrestapi
+
+INCLUDEPATH += $$PWD/../../bankautomat_exe/bankautomat/restapi/restapi
+DEPENDPATH += $$PWD/../../bankautomat_exe/bankautomat/restapi/restapi

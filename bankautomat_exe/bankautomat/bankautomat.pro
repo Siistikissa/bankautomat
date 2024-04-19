@@ -37,9 +37,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/restapi/build-restapi-q
 INCLUDEPATH += $$PWD/restapi/restapi
 DEPENDPATH += $$PWD/restapi/restapi
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/release/ -lPinUI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/debug/ -lPinUI
-else:unix: LIBS += -L$$PWD/Pin/build-PinUI-qmaketesti-Debug/ -lPinUI
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-PinUI-qmaketesti-Debug/release/ -lPinUI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-PinUI-qmaketesti-Debug/debug/ -lPinUI
 
-INCLUDEPATH += $$PWD/Pin/PinUI
-DEPENDPATH += $$PWD/Pin/PinUI
+INCLUDEPATH += $$PWD/PinUI
+DEPENDPATH += $$PWD/PinUI
