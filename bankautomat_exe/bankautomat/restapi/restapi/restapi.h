@@ -17,15 +17,15 @@ public:
     void postCustomer(QJsonObject jsonObj);
     //real
     //takes serial and pin. returns token on success. on error return false.
-    void postLogin(QJsonObject jsonObj);
+    void postLogin(QString serial, QString pin);
     //takes serial. returns cu_id.
-    void getAccountId(QJsonObject jsonObj);
+    void getAccountId(QString serial);
     //takes cu_id. returns ac_id, balance and credit.
-    void getAccountBalance(QJsonObject jsonObj);
+    void getAccountBalance(int cu_id);
     //takes ac_id, start, stop. returns end-start amont of transactions.
-    void getTransactions(QJsonObject jsonObj);
+    void getTransactions(int ac_id, int start, int stop);
     //takes type, newAmount, cu_id, transaction and ac_id. returns query.
-    void postWithdraw(QJsonObject jsonObj);
+    void postWithdraw(QString type, int newAmount, int cu_id, int transaction, int ac_id);
     //set this token to the token got from postLogin().
     QString token;
 signals:

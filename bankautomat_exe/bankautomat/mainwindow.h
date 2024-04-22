@@ -48,19 +48,24 @@ private:
     void showTransactions();
     void showWithdraw();
     void clearUiButtons();
-    void setUiTextBalance(QString lastReply);
+    void parseApiReply(QString lastReply);
     void checkPassword(QString tryPin);
     void clearApiData();
     Ui::MainWindow *ui;
     QSoundEffect beep;
     QSoundEffect lowbeep;
     bool RFIDpressed = false;
+    QString apiState;
     Restapi *api = new Restapi;
     Rfid *rfid = new Rfid;
+    int langueage; //0-2, 0 = english, 1 = finnish, 2 = swedish
     //values needed for api communcation
     QString serial;
     QString pin;
     QString type;
+    QString balance;
+    QString credit;
+    std::vector<QString> transactionsVector;
     int cu_id;
     int ac_id;
     int newAmount;

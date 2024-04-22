@@ -29,5 +29,6 @@ private:
     std::string tempToken;
     Ui::MainWindow *ui;
     Restapi *api = new Restapi;
+    bool coolThing = false;
 };
 #endif // MAINWINDOW_H

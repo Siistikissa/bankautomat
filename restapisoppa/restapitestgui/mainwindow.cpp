@@ -16,32 +16,49 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    QJsonObject jsonObj;
-    jsonObj.insert("serial","testi20");
-    jsonObj.insert("pin","1234");
-
-    api->postLogin(jsonObj);
+    api->postLogin("testi20","1234");
     //api->getAllAccounts();
+
 }
 
 void MainWindow::setUiText(QString lastReply)
 {
+    if(coolThing){
+        /*
+     auto result = lastReply.split(", ");
+    ui->textAccounts->setText(result[2]);
+*/
+        QString oldText;
+        ui->textAccounts->setText("");
+        auto result = lastReply.split(", ");
+        for (int i = 0; i<result.length()/2; i++){
+            qDebug() << result[i] +  result[(result.length()/2)+i];
+            oldText = ui->textAccounts->toPlainText();
+            ui->textAccounts->setText(oldText + "\n" + result[i] + ", " + result[(result.length()/2)+i]);
+        }
+    }
+
+    else{
     ui->textAccounts->setText(lastReply);
     api->token = lastReply;
+    }
 }
 
 
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    /*
     QJsonObject jsonObj;
     jsonObj.insert("serial","testi20");
     api->getAccountId(jsonObj);
+*/
 }
 
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    /*
     QJsonObject jsonObj;
     jsonObj.insert("type","balance");
     jsonObj.insert("newAmount",1900);
@@ -49,11 +66,10 @@ void MainWindow::on_pushButton_3_clicked()
     jsonObj.insert("transaction",100);
     jsonObj.insert("ac_id",1);
     api->postWithdraw(jsonObj);
-    /*
-    QJsonObject jsonObj;
-    jsonObj.insert("cu_id",3);
-    api->getAccountBalance(jsonObj);
-*/
+_*/
+
+    coolThing = true;
+    api->getTransactions(1,0,5);
 /*
     QJsonObject jsonObj;
     jsonObj.insert("id",1);
