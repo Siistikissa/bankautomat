@@ -11,7 +11,7 @@ const transactions = {
   add: function(transactions, callback) {
     return db.query(
       'select * from (select * from transactions where ac_id=? order by tr_id desc limit ?,?) t1 order by tr_date', 
-      [transactions.id, transactions.start, transactions.stop], 
+      [transactions.ac_id, transactions.start, transactions.stop], 
       callback
     );
   },
