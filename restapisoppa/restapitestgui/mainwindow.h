@@ -19,12 +19,16 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void setUiText();
+    void setUiText(QString lastReply);
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_3_clicked();
+
 private:
+    std::string tempToken;
     Ui::MainWindow *ui;
     Restapi *api = new Restapi;
+    bool coolThing = false;
 };
 #endif // MAINWINDOW_H

@@ -28,6 +28,7 @@ router.get('/:id',
 
 router.post('/', 
 function(request, response) {
+  //console.log("body : " + request.body)
   transactions.add(request.body, function(err, dbResult) {
     if (err) {
       console.log("transaction post error : "+ err)
