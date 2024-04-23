@@ -34,5 +34,6 @@ void Rfid::readRfidData()
     rfidData.remove('-');
     rfidData.remove('>');
     rfidData.remove(QRegularExpression("[^0-9]"));
+    qDebug() <<"rfid " <<rfidData;
     emit cardNumber(rfidData);
 }
