@@ -84,9 +84,9 @@ void MainWindow::showTransactions()
     ui->btnB->setText(dictionary["Back"][langueage]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText(dictionary["Show older"][langueage]);
-    connect(ui->btnC, &QPushButton, this, &MainWindow::showOlder);
+    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showOlder);
     ui->btnD->setText(dictionary["Show newer"][langueage]);
-    connect(ui->btnD, &QPushButton, this, &MainWindow::showNewer);
+    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showNewer);
 }
 
 
@@ -119,13 +119,13 @@ void MainWindow::clearUiButtons()
 void MainWindow::parseApiReply(QString lastReply)
 {
     if(apiState == "login"){
-        if(!lastReply){
+        if(lastReply != "false"){
             api->token = lastReply;
             api->getAccountId(serial);
             apiState = "accountId";
         }
         else{
-            qDebug << "Wrong password!";
+            qDebug() << "Wrong password!";
         }
     }
     else if(apiState == "accountId"){
