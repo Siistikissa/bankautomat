@@ -20,6 +20,7 @@ public:
 private:
     Ui::Kuitti *ui;
     QSoundEffect printtaus;
+    QImage img;
 
     std::unordered_map<QString, std::vector<QString>> dictionary = {
         {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
