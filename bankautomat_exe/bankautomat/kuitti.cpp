@@ -19,7 +19,7 @@ Kuitti::Kuitti(QWidget *parent) :
 
     QFont originalFont = painter.font();
 
-    QRect textRect1(10, 20, img.width() - 20, 20);
+    QRect textRect1(10, 25, img.width() - 20, 20);
     painter.setPen(Qt::black);
     painter.drawText(textRect1, Qt::AlignJustify | Qt::AlignTop, "-----------------------------------------------------------------------");
 
