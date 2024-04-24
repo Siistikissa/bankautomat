@@ -13,7 +13,7 @@ kuitti::kuitti(QWidget *parent)
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout;
 
-    QPixmap image("C://Qt//1//ripped_receipt_1");
+    QPixmap image("ripped_receipt_1");
 
     QImage img(image.size(), QImage::Format_ARGB32_Premultiplied);
     img.fill(Qt::transparent);
