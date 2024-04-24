@@ -79,12 +79,14 @@ void MainWindow::showBalance()
 void MainWindow::showTransactions()
 {
     disconnectAllFunctions();
-    api->getTransactions(ac_id, 0, 5); //TODO: add logic to start and stop
+    api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
     qDebug()<<"showTransactions()..";
     ui->btnB->setText(dictionary["Back"][langueage]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText(dictionary["Show older"][langueage]);
+    connect(ui->btnC, &QPushButton, this, &MainWindow::showOlder);
     ui->btnD->setText(dictionary["Show newer"][langueage]);
+    connect(ui->btnD, &QPushButton, this, &MainWindow::showNewer);
 }
 
 
@@ -117,9 +119,14 @@ void MainWindow::clearUiButtons()
 void MainWindow::parseApiReply(QString lastReply)
 {
     if(apiState == "login"){
-        api->token = lastReply;
-        api->getAccountId(serial);
-        apiState = "accountId";
+        if(!lastReply){
+            api->token = lastReply;
+            api->getAccountId(serial);
+            apiState = "accountId";
+        }
+        else{
+            qDebug << "Wrong password!";
+        }
     }
     else if(apiState == "accountId"){
         cu_id = lastReply.toInt();
@@ -151,6 +158,13 @@ void MainWindow::parseApiReply(QString lastReply)
         ui->lineEdit->setText(dictionary["Account transactions"][langueage] + "\n");
         QString oldText;
         auto result = lastReply.split(", ");
+        if(lastReply.isEmpty()){
+            transactionStopper = true;
+        }
+        else{
+            transactionStopper = false;
+        }
+
         for (int i = 0; i<result.length()/2; i++){
             oldText = ui->lineEdit->text();
             transactionsVector.push_back( result[i] + ", " + result[(result.length()/2)+i]);
@@ -165,6 +179,7 @@ void MainWindow::parseApiReply(QString lastReply)
 void MainWindow::checkPassword(QString tryPin)
 {
     pin = tryPin;
+    apiState = "login";
     api->postLogin(serial,pin);
 }
 
@@ -182,6 +197,26 @@ void MainWindow::clearApiData()
     start = 0;
     stop = 0;
     transaction = 0;
+
+}
+
+void MainWindow::showOlder()
+{
+    if(!transactionStopper){
+        start += 5;
+        stop += 5;
+    }
+
+
+}
+
+void MainWindow::showNewer()
+{
+    if (start > 0 && stop > 5){
+        start -= 5;
+        stop -= 5;
+    }
+
 
 }
 

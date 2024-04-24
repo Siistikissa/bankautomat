@@ -51,6 +51,8 @@ private:
     void parseApiReply(QString lastReply);
     void checkPassword(QString tryPin);
     void clearApiData();
+    void showOlder();
+    void showNewer();
     Ui::MainWindow *ui;
     QSoundEffect beep;
     QSoundEffect lowbeep;
@@ -72,6 +74,7 @@ private:
     int start;
     int stop;
     int transaction;
+    bool transactionStopper;
     //dictionary contains multilinquistics
     std::unordered_map<QString, std::vector<QString>> dictionary = {
         {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
