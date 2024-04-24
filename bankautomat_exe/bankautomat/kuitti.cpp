@@ -84,8 +84,14 @@ kuitti::kuitti(QWidget *parent)
     label->setPixmap(QPixmap::fromImage(img));
     layout->addWidget(label);
     setLayout(layout);
-
+    
     qDebug() << "Ikkunan koko:" << this->size();
+
+    QDir directory("../bankautomat/");
+    QString pathToPrint = directory.absoluteFilePath("printtaus.wav");
+    printtaus.setSource(QUrl::fromLocalFile(pathToPrint));
+    printtaus.setVolume(1.0);
+    printtaus.play();
 }
 
 kuitti::~kuitti()
