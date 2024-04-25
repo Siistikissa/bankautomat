@@ -22,7 +22,6 @@ HEADERS += \
 
 FORMS += \
     kuitti.ui \
-    rfid.ui \
     mainwindow.ui
 
 # Default rules for deployment.
