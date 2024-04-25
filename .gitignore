@@ -1,7 +1,5 @@
 backend/node_modules/*
-bank-automat/build/*
-bank-automat/*.user
-build-bank-automat-Desktop-Debug/*
+bankautomat_exe/bankautomat/build/*
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
