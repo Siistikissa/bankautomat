@@ -7,7 +7,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //setup paths to sounds
-    QDir directory("../bankautomat/");
+    QDir directory("../");
+    QPixmap flag_of_uk = directory.absoluteFilePath("Flag_of_the_United_Kingdom.png");
+    QIcon englishIcon(flag_of_uk);
+    ui->english->setIcon(englishIcon);
+    QPixmap flag_of_finland = directory.absoluteFilePath("Flag_of_Finland.png");
+    QIcon finnishIcon(flag_of_finland);
+    ui->finnish->setIcon(finnishIcon);
+    QPixmap flag_of_sweden = directory.absoluteFilePath("Flag_of_Sweden.png");
+    QIcon swedishIcon(flag_of_sweden);
+    ui->swedish->setIcon(swedishIcon);
+
     QString pathToBeep = directory.absoluteFilePath("beep.wav");
     QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
     beep.setSource(QUrl::fromLocalFile(pathToBeep));
@@ -20,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(api, &Restapi::replySet, this, &MainWindow::parseApiReply);
     //connect rfid reader and start the aplication
     connect(rfid, &Rfid::cardNumber, this, &MainWindow::pinScreen);
-    langueage = 0;
+    language = 0;
     startScreen();
 }
 
@@ -32,7 +42,7 @@ MainWindow::~MainWindow()
 void MainWindow::startScreen()
 {
     qDebug()<<"startScreen()..";
-    ui->lineEdit->setText(dictionary["Insert card"][langueage]);
+    ui->lineEdit->setText(dictionary["Insert card"][language]);
     clearUiButtons();
 }
 
@@ -40,20 +50,20 @@ void MainWindow::pinScreen(QString cNum)
 {
     qDebug()<<"pinScreen()..";
     serial = cNum;
-    ui->btnA->setText(dictionary["Abort transaction"][langueage]);
+    ui->btnA->setText(dictionary["Abort transaction"][language]);
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
     createPinUI();
-    ui->lineEdit->setText(dictionary["Insert pin"][langueage] + "3" + dictionary["Tries left"][langueage] );
+    ui->lineEdit->setText(dictionary["Insert pin"][language] + "3" + dictionary["Tries left"][language] );
 }
 
 void MainWindow::mainScreen()
 {
     disconnectAllFunctions();
     qDebug()<<"mainScreen()..";
-    ui->lineEdit->setText(dictionary["Choose action"][langueage]);
-    ui->btnB->setText(dictionary["Account balance"][langueage]);
-    ui->btnC->setText(dictionary["Account transactions"][langueage]);
-    ui->btnD->setText(dictionary["Withdrawal"][langueage]);
+    ui->lineEdit->setText(dictionary["Choose action"][language]);
+    ui->btnB->setText(dictionary["Account balance"][language]);
+    ui->btnC->setText(dictionary["Account transactions"][language]);
+    ui->btnD->setText(dictionary["Withdrawal"][language]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
     connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
@@ -69,7 +79,7 @@ void MainWindow::showBalance()
     api->getAccountBalance(cu_id);
     apiState = "accountBalance";
     qDebug()<<"showBalance()..";
-    ui->btnB->setText(dictionary["Back"][langueage]);
+    ui->btnB->setText(dictionary["Back"][language]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("");
     ui->btnD->setText("");
@@ -81,11 +91,11 @@ void MainWindow::showTransactions()
     disconnectAllFunctions();
     api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
     qDebug()<<"showTransactions()..";
-    ui->btnB->setText(dictionary["Back"][langueage]);
+    ui->btnB->setText(dictionary["Back"][language]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    ui->btnC->setText(dictionary["Show older"][langueage]);
+    ui->btnC->setText(dictionary["Show older"][language]);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showOlder);
-    ui->btnD->setText(dictionary["Show newer"][langueage]);
+    ui->btnD->setText(dictionary["Show newer"][language]);
     connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showNewer);
 }
 
@@ -95,7 +105,7 @@ void MainWindow::showWithdraw()
     disconnectAllFunctions();
     qDebug()<<"showWithdraw()..";
     ui->lineEdit->setText("Valitse summa");
-    ui->btnB->setText(dictionary["Back"][langueage]);
+    ui->btnB->setText(dictionary["Back"][language]);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
     ui->btnC->setText("20€");
     ui->btnD->setText("40€");
@@ -145,17 +155,17 @@ void MainWindow::parseApiReply(QString lastReply)
             type = "credit";
         }
         if(type == "balance"){
-            ui->lineEdit->setText(dictionary["Account balance"][langueage] + balance);
+            ui->lineEdit->setText(dictionary["Account balance"][language] + balance);
 
         }
         else if(type == "credit"){
-            ui->lineEdit->setText(dictionary["Account balance"][langueage] + credit);
+            ui->lineEdit->setText(dictionary["Account balance"][language] + credit);
 
 
         }
     }
     else if(apiState == "transactions"){
-        ui->lineEdit->setText(dictionary["Account transactions"][langueage] + "\n");
+        ui->lineEdit->setText(dictionary["Account transactions"][language] + "\n");
         QString oldText;
         auto result = lastReply.split(", ");
         if(lastReply.isEmpty()){
@@ -310,5 +320,23 @@ void MainWindow::disconnectAllFunctions()
     disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
     disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
     disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
+}
+
+
+void MainWindow::on_english_clicked()
+{
+    language = 0;
+}
+
+
+void MainWindow::on_finnish_clicked()
+{
+    language = 1;
+}
+
+
+void MainWindow::on_swedish_clicked()
+{
+    language = 2;
 }
 

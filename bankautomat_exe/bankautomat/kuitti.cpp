@@ -6,14 +6,15 @@
 #include <QWidget>
 #include <QVBoxLayout>
 
-kuitti::kuitti(QWidget *parent)
+Kuitti::Kuitti(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::kuitti)
+    , ui(new Ui::Kuitti)
 {
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout;
 
-    QPixmap image("ripped_receipt_1");
+    QDir directory("../");
+    QPixmap image = directory.absoluteFilePath("ripped_receipt_1.png");
 
     QImage img(image.size(), QImage::Format_ARGB32_Premultiplied);
     img.fill(Qt::transparent);
@@ -87,14 +88,14 @@ kuitti::kuitti(QWidget *parent)
     
     qDebug() << "Ikkunan koko:" << this->size();
 
-    QDir directory("../bankautomat/");
+    /*QDir directory("../bankautomat/");
     QString pathToPrint = directory.absoluteFilePath("printtaus.wav");
     printtaus.setSource(QUrl::fromLocalFile(pathToPrint));
     printtaus.setVolume(1.0);
-    printtaus.play();
+    printtaus.play();*/
 }
 
-kuitti::~kuitti()
+Kuitti::~Kuitti()
 {
     delete ui;
 }

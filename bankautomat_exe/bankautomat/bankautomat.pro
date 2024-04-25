@@ -42,3 +42,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-PinUI-qmaketesti-
 
 INCLUDEPATH += $$PWD/PinUI
 DEPENDPATH += $$PWD/PinUI
+
+RESOURCES += \
+    images.qrc
