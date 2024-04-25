@@ -3,12 +3,15 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPainter>
+#include <QWidget>
+#include <QVBoxLayout>
 
-Kuitti::Kuitti(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Kuitti)
+kuitti::kuitti(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::kuitti)
 {
     ui->setupUi(this);
+    QVBoxLayout *layout = new QVBoxLayout;
 
     QPixmap image("ripped_receipt_1");
 
@@ -79,11 +82,11 @@ Kuitti::Kuitti(QWidget *parent) :
 
     QLabel *label = new QLabel(this);
     label->setPixmap(QPixmap::fromImage(img));
-
-    setCentralWidget(label);
-
-    qDebug() << "Ikkunan koko:" << this->size();
+    layout->addWidget(label);
+    setLayout(layout);
     
+    qDebug() << "Ikkunan koko:" << this->size();
+
     QDir directory("../bankautomat/");
     QString pathToPrint = directory.absoluteFilePath("printtaus.wav");
     printtaus.setSource(QUrl::fromLocalFile(pathToPrint));
@@ -91,7 +94,7 @@ Kuitti::Kuitti(QWidget *parent) :
     printtaus.play();
 }
 
-Kuitti::~Kuitti()
+kuitti::~kuitti()
 {
     delete ui;
 }
