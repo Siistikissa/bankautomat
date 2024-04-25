@@ -22,7 +22,6 @@ HEADERS += \
 
 FORMS += \
     kuitti.ui \
-    rfid.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -31,14 +30,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/release/ -lrestapi
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/restapi/build-restapi-qmaketesti-Debug/debug/ -lrestapi
 
-INCLUDEPATH += $$PWD/restapi/restapi
-DEPENDPATH += $$PWD/restapi/restapi
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/restApi/restapi/build/release/ -lrestapi
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/restApi/restapi/build/debug/ -lrestapi
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/build-PinUI-qmaketesti-Debug/release/ -lPinUI
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/build-PinUI-qmaketesti-Debug/debug/ -lPinUI
+INCLUDEPATH += $$PWD/restApi/restapi
+DEPENDPATH += $$PWD/restApi/restapi
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/PinUI/build/release/ -lPinUI
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PinUI/build/debug/ -lPinUI
 
 INCLUDEPATH += $$PWD/PinUI
 DEPENDPATH += $$PWD/PinUI

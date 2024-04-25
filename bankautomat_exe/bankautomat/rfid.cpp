@@ -8,11 +8,22 @@ Rfid::Rfid()
     PORT->setPortName(portInfo.portName());
     PORT->open(QIODevice::ReadWrite);
     }
+    //will not work is cardreader is not connected
+    connect(PORT, &QSerialPort::readyRead, this, &Rfid::readRfidData);
+
+   /* try{
     if (PORT->isOpen()){
-        connect(PORT, &QSerialPort::readyRead, this, &Rfid::readRfidData);
+
     } else {
 
+        throw 2000;
     }
+
+    }
+    catch(...){
+        qDebug() << "Card reader not connected.";
+    };
+*/
 }
 
 Rfid::~Rfid()

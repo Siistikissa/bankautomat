@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap flag_of_sweden = directory.absoluteFilePath("Flag_of_Sweden.png");
     QIcon swedishIcon(flag_of_sweden);
     ui->swedish->setIcon(swedishIcon);
-
     QString pathToBeep = directory.absoluteFilePath("beep.wav");
     QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
     beep.setSource(QUrl::fromLocalFile(pathToBeep));
