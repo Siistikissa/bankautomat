@@ -188,8 +188,8 @@ void MainWindow::showTransactions()
 void MainWindow::language_showTransactions()
 {
     ui->btnA->setText(dictionary["Back"][language]);
+    ui->btnB->setText("");
     ui->btnC->setText("");
-    ui->btnD->setText("");
     ui->btnD->setText("");
     ui->btnE->setText(dictionary["Show older"][language]);
     ui->btnF->setText(dictionary["Show newer"][language]);
