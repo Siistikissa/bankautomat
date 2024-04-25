@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //setup paths to sounds
-    QDir directory("../bankautomat/");
+    QDir directory("../");
     QString pathToBeep = directory.absoluteFilePath("beep.wav");
     QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
     beep.setSource(QUrl::fromLocalFile(pathToBeep));
