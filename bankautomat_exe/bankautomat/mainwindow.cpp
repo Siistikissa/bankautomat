@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    timer = new QTimer(this);
+    timer->start(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimer()));
     //setup paths to sounds
     QDir directory("../");
     QPixmap flag_of_uk = directory.absoluteFilePath("Flag_of_the_United_Kingdom.png");
@@ -19,13 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->swedish->setIcon(swedishIcon);
     QString pathToBeep = directory.absoluteFilePath("beep.wav");
     QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
+    QString pathToPrinttaus = directory.absoluteFilePath("printtaus.wav");
     beep.setSource(QUrl::fromLocalFile(pathToBeep));
     beep.setVolume(1.0);
     lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
+    printtaus.setSource(QUrl::fromLocalFile(pathToPrinttaus));
+    printtaus.setVolume(1.0);
     //connect debug buttons
     connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
-    connect(ui->RFIDButton_2, &QPushButton::clicked, this, &MainWindow::createRfid);
+    connect(ui->SerialButton, &QPushButton::clicked, this, &MainWindow::createRfid);
     connect(api, &Restapi::replySet, this, &MainWindow::parseApiReply);
     //connect rfid reader and start the aplication
     connect(rfid, &Rfid::cardNumber, this, &MainWindow::pinScreen);
@@ -38,84 +44,48 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateTimer()
+{
+    runtime++;
+    qDebug()<<"------------------------------------------------------ application runtime:"<<runtime<<"seconds";
+    if(appState != 0)
+    {
+        logoutTimer-=1;
+        QString logoutTimerText = QString::number(logoutTimer);
+        QString logoutInfoText = "";
+        if(language==0)
+        {
+            logoutInfoText = " seconds to automatic logout";
+        }
+        if(language==1)
+        {
+            logoutInfoText = " sekuntia automaattiseen uloskirjautumiseen";
+        }
+        if(language==2)
+        {
+            logoutInfoText = " sekunder för automatisk utloggning";
+        }
+        QString combinedText = logoutTimerText + logoutInfoText;
+        ui->logoutInfo->setText(combinedText);
+    }
+    if(appState != 0 && logoutTimer==0)
+    {
+        startScreen();
+    }
+}
+
 void MainWindow::startScreen()
 {
     qDebug()<<"startScreen()..";
+    appState=0;
+    language_startScreen();
+    disconnectAllFunctions();
+    ui->logoutInfo->setText("");
+}
+
+void MainWindow::language_startScreen()
+{
     ui->lineEdit->setText(dictionary["Insert card"][language]);
-    clearUiButtons();
-}
-
-void MainWindow::pinScreen(QString cNum)
-{
-    qDebug()<<"pinScreen()..";
-    serial = cNum;
-    ui->btnA->setText(dictionary["Abort transaction"][language]);
-    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
-    createPinUI();
-    ui->lineEdit->setText(dictionary["Insert pin"][language] + "3" + dictionary["Tries left"][language] );
-}
-
-void MainWindow::mainScreen()
-{
-    disconnectAllFunctions();
-    qDebug()<<"mainScreen()..";
-    ui->lineEdit->setText(dictionary["Choose action"][language]);
-    ui->btnB->setText(dictionary["Account balance"][language]);
-    ui->btnC->setText(dictionary["Account transactions"][language]);
-    ui->btnD->setText(dictionary["Withdrawal"][language]);
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
-    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
-    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
-    ui->btnE->setText("");
-    ui->btnF->setText("");
-    ui->btnG->setText("");
-    ui->btnH->setText("");
-}
-
-void MainWindow::showBalance()
-{
-    disconnectAllFunctions();
-    api->getAccountBalance(cu_id);
-    apiState = "accountBalance";
-    qDebug()<<"showBalance()..";
-    ui->btnB->setText(dictionary["Back"][language]);
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    ui->btnC->setText("");
-    ui->btnD->setText("");
-}
-
-
-void MainWindow::showTransactions()
-{
-    disconnectAllFunctions();
-    api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
-    qDebug()<<"showTransactions()..";
-    ui->btnB->setText(dictionary["Back"][language]);
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    ui->btnC->setText(dictionary["Show older"][language]);
-    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showOlder);
-    ui->btnD->setText(dictionary["Show newer"][language]);
-    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showNewer);
-}
-
-
-void MainWindow::showWithdraw()
-{
-    disconnectAllFunctions();
-    qDebug()<<"showWithdraw()..";
-    ui->lineEdit->setText("Valitse summa");
-    ui->btnB->setText(dictionary["Back"][language]);
-    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    ui->btnC->setText("20€");
-    ui->btnD->setText("40€");
-    ui->btnE->setText("60€");
-    ui->btnF->setText("90€");
-    ui->btnG->setText("140€");
-    ui->btnH->setText("240€");
-}
-
-void MainWindow::clearUiButtons()
-{
     ui->btnA->setText("");
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -125,6 +95,175 @@ void MainWindow::clearUiButtons()
     ui->btnG->setText("");
     ui->btnH->setText("");
 }
+
+void MainWindow::pinScreen(QString cNum)
+{
+    qDebug()<<"pinScreen()..";
+    logoutTimer=60;
+    appState=1;
+    language_pinScreen();
+    disconnectAllFunctions();
+    serial = cNum;
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
+    createPinUI();
+}
+
+void MainWindow::language_pinScreen()
+{
+    ui->lineEdit->setText(dictionary["Insert pin"][language] + ": " + pinAttempts + " " + dictionary["Tries left"][language] );
+    ui->btnA->setText(dictionary["Abort transaction"][language]);
+    ui->btnB->setText("");
+    ui->btnC->setText("");
+    ui->btnD->setText("");
+    ui->btnE->setText("");
+    ui->btnF->setText("");
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+
+void MainWindow::mainScreen()
+{
+    qDebug()<<"mainScreen()..";
+    appState=2;
+    withdraw=0;
+    withdrawSum=0;
+    withdrawInText="";
+    language_mainScreen();
+    disconnectAllFunctions();
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
+    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
+    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
+}
+
+void MainWindow::language_mainScreen()
+{
+    ui->lineEdit->setText(dictionary["Choose action"][language]);
+    ui->btnA->setText(dictionary["Abort transaction"][language]);
+    ui->btnB->setText(dictionary["Account balance"][language]);
+    ui->btnC->setText(dictionary["Account transactions"][language]);
+    ui->btnD->setText(dictionary["Withdrawal"][language]);
+    ui->btnE->setText("");
+    ui->btnF->setText("");
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+
+void MainWindow::showBalance()
+{
+    qDebug()<<"showBalance()..";
+    appState=3;
+    language_showBalance();
+    disconnectAllFunctions();
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
+    api->getAccountBalance(cu_id);
+    apiState = "accountBalance";
+}
+
+void MainWindow::language_showBalance()
+{
+    ui->btnA->setText(dictionary["Back"][language]);
+    ui->btnB->setText("");
+    ui->btnC->setText("");
+    ui->btnD->setText("");
+    ui->btnE->setText("");
+    ui->btnF->setText("");
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+
+
+void MainWindow::showTransactions()
+{
+    qDebug()<<"showTransactions()..";
+    appState=4;
+    language_showTransactions();
+    disconnectAllFunctions();
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
+    connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::showOlder);
+    connect(ui->btnF, &QPushButton::clicked, this, &MainWindow::showNewer);
+    api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
+}
+
+void MainWindow::language_showTransactions()
+{
+    ui->btnA->setText(dictionary["Back"][language]);
+    ui->btnC->setText("");
+    ui->btnD->setText("");
+    ui->btnD->setText("");
+    ui->btnE->setText(dictionary["Show older"][language]);
+    ui->btnF->setText(dictionary["Show newer"][language]);
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+
+
+void MainWindow::showWithdraw()
+{
+    qDebug()<<"showTransactions()..";
+    appState=5;
+    language_showWithdraw();
+    disconnectAllFunctions();
+    setUiTextBalance();
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
+    connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
+    connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::withdraw20);
+    connect(ui->btnD, &QPushButton::clicked, this, &MainWindow::withdraw40);
+    connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdraw60);
+    connect(ui->btnF, &QPushButton::clicked, this, &MainWindow::withdraw90);
+    connect(ui->btnG, &QPushButton::clicked, this, &MainWindow::withdraw140);
+    connect(ui->btnH, &QPushButton::clicked, this, &MainWindow::withdraw240);
+}
+
+void MainWindow::language_showWithdraw()
+{
+    ui->btnA->setText(dictionary["Back"][language]);
+    ui->btnB->setText("Confirm");
+    ui->btnC->setText("20€");
+    ui->btnD->setText("40€");
+    ui->btnE->setText("60€");
+    ui->btnF->setText("90€");
+    ui->btnG->setText("140€");
+    ui->btnH->setText("240€");
+}
+
+void MainWindow::withdrawConfirmation()
+{
+    qDebug()<<"withdrawConfirmation()..";
+    appState=6;
+    language_withdrawConfirmation();
+    withdrawSum = withdraw;
+    disconnectAllFunctions();
+    connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
+    connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawAmount);
+    QString rivi1 = "Withdrawing: ";
+    QString rivi2 = "€";
+    QString combinedText = rivi1 + withdrawInText + rivi2;
+    ui->lineEdit->setText(combinedText);
+}
+
+void MainWindow::language_withdrawConfirmation()
+{
+    ui->btnA->setText(dictionary["Back"][language]);
+    ui->btnB->setText("");
+    ui->btnC->setText("");
+    ui->btnD->setText("");
+    ui->btnE->setText("Confirm");
+    ui->btnF->setText("");
+    ui->btnG->setText("");
+    ui->btnH->setText("");
+}
+
+void MainWindow::withdrawAmount()
+{
+    qDebug()<<withdrawSum<<"€ nostettu";
+    withdraw=0;
+    withdrawSum=0;
+    withdrawInText="";
+    createKuitti();
+    startScreen();
+}
+
 void MainWindow::parseApiReply(QString lastReply)
 {
     if(apiState == "login"){
@@ -159,8 +298,6 @@ void MainWindow::parseApiReply(QString lastReply)
         }
         else if(type == "credit"){
             ui->lineEdit->setText(dictionary["Account balance"][language] + credit);
-
-
         }
     }
     else if(apiState == "transactions"){
@@ -187,6 +324,8 @@ void MainWindow::parseApiReply(QString lastReply)
 
 void MainWindow::checkPassword(QString tryPin)
 {
+    qDebug()<<"Syötetty PIN: "<<tryPin;
+    logoutTimer=60;
     pin = tryPin;
     apiState = "login";
     api->postLogin(serial,pin);
@@ -232,12 +371,13 @@ void MainWindow::showNewer()
 void MainWindow::createPinUI()
 {
     PinUI* PinWindow = new PinUI;
-    connect(PinWindow, &PinUI::sendPin, this, &MainWindow::checkPassword);
+    connect(PinWindow, SIGNAL(sendPin(QString)), this, SLOT(checkPassword(QString)));
     PinWindow->show();
 }
 
 void MainWindow::createKuitti()
 {
+    printtaus.play();
     Kuitti* KuittiWindow = new Kuitti;
     KuittiWindow->show();
 }
@@ -249,93 +389,275 @@ void MainWindow::createRfid() {
 
 void MainWindow::on_RFIDButton_clicked()
 {
-    qDebug()<<"*kortti syötetty koneeseen..";
+    qDebug()<<"*kortti 0000411932 syötetty koneeseen..";
     RFIDpressed = true;
-    //pinScreen();
+    pinScreen("0000411932");
 }
 
-void MainWindow::on_PINUIButton_clicked()
+void MainWindow::on_PINButton_clicked()
 {
-    qDebug()<<"*PIN syötetty oikein..";
+    appState=2;
     mainScreen();
 }
 
+
 void MainWindow::on_KuittiButton_clicked()
 {
-    qDebug()<<"Tulostetaan kuitti..";
+    qDebug()<<"tulostetaan tyhjä kuitti..";
 }
 
 void MainWindow::on_btnA_clicked()
 {
-    beep.play();
     qDebug()<<"A-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnB_clicked()
 {
-    beep.play();
     qDebug()<<"B-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnC_clicked()
 {
-    beep.play();
     qDebug()<<"C-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnD_clicked()
 {
-    beep.play();
     qDebug()<<"D-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnE_clicked()
 {
-    beep.play();
     qDebug()<<"E-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnF_clicked()
 {
-    beep.play();
     qDebug()<<"F-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnG_clicked()
 {
-    beep.play();
     qDebug()<<"G-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
 
 void MainWindow::on_btnH_clicked()
 {
-    beep.play();
     qDebug()<<"H-toimintoa painettu..";
+    beep.play();
+    logoutTimer=60;
 }
-
-void MainWindow::disconnectAllFunctions()
-{
-    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
-    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
-    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
-    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::mainScreen);
-}
-
 
 void MainWindow::on_english_clicked()
 {
+    beep.play();
+    logoutTimer=60;
     language = 0;
+    switch (appState) {
+    case 0:
+        language_startScreen();
+        break;
+    case 1:
+        language_pinScreen();
+        break;
+    case 2:
+        language_mainScreen();
+        break;
+    case 3:
+        language_showBalance();
+        break;
+    case 4:
+        language_showTransactions();
+        break;
+    case 5:
+        language_showWithdraw();
+        break;
+    case 6:
+        language_withdrawConfirmation();
+        break;
+    default:
+        break;
+    }
 }
 
 
 void MainWindow::on_finnish_clicked()
 {
+    beep.play();
+    logoutTimer=60;
     language = 1;
+    switch (appState) {
+    case 0:
+        language_startScreen();
+        break;
+    case 1:
+        language_pinScreen();
+        break;
+    case 2:
+        language_mainScreen();
+        break;
+    case 3:
+        language_showBalance();
+        break;
+    case 4:
+        language_showTransactions();
+        break;
+    case 5:
+        language_showWithdraw();
+        break;
+    case 6:
+        language_withdrawConfirmation();
+        break;
+    default:
+        break;
+    }
 }
 
 
 void MainWindow::on_swedish_clicked()
 {
+    beep.play();
+    logoutTimer=60;
     language = 2;
+    switch (appState) {
+    case 0:
+        language_startScreen();
+        break;
+    case 1:
+        language_pinScreen();
+        break;
+    case 2:
+        language_mainScreen();
+        break;
+    case 3:
+        language_showBalance();
+        break;
+    case 4:
+        language_showTransactions();
+        break;
+    case 5:
+        language_showWithdraw();
+        break;
+    case 6:
+        language_withdrawConfirmation();
+        break;
+    default:
+        break;
+    }
 }
 
+void MainWindow::setUiTextBalance()
+{
+    qDebug()<<"setUiTextBalance()..";
+    withdrawInText = QString::number(withdraw);
+    QString chooseSum1 = "";
+    if(language==0)
+    {
+         chooseSum1 = "Choose sum: ";
+    }
+    if(language==1)
+    {
+        chooseSum1 = "Valitse summa: ";
+    }
+    if(language==2)
+    {
+        chooseSum1 = "Välj summa: ";
+    }
+    QString chooseSum2 = "€";
+    QString combinedText = chooseSum1 + withdrawInText + chooseSum2;
+    ui->lineEdit->setText(combinedText);
+}
+
+void MainWindow::withdraw20()
+{
+    if(withdraw<381)
+    {
+        withdraw+=20;
+        setUiTextBalance();
+    }
+}
+
+void MainWindow::withdraw40()
+{
+    if(withdraw<361)
+    {
+        withdraw+=40;
+        setUiTextBalance();
+    }
+}
+void MainWindow::withdraw60()
+{
+    if(withdraw<341)
+    {
+        withdraw+=60;
+        setUiTextBalance();
+    }
+}
+
+void MainWindow::withdraw90()
+{
+    if(withdraw<311)
+    {
+        withdraw+=90;
+        setUiTextBalance();
+    }
+}
+
+void MainWindow::withdraw140()
+{
+    if(withdraw<261)
+    {
+        withdraw+=140;
+        setUiTextBalance();
+    }
+}
+
+void MainWindow::withdraw240()
+{
+    if(withdraw<161)
+    {
+        withdraw+=240;
+        setUiTextBalance();
+    }
+}
+
+void MainWindow::disconnectAllFunctions()
+{
+    disconnect(ui->btnA, &QPushButton::clicked, this, &MainWindow::startScreen);
+    disconnect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
+
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::showBalance);
+    disconnect(ui->btnB, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
+
+    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::showTransactions);
+    disconnect(ui->btnC, &QPushButton::clicked, this, &MainWindow::withdraw20);
+
+    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::showWithdraw);
+    disconnect(ui->btnD, &QPushButton::clicked, this, &MainWindow::withdraw40);
+
+    disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::showOlder);
+    disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdraw60);
+
+    disconnect(ui->btnF, &QPushButton::clicked, this, &MainWindow::showNewer);
+    disconnect(ui->btnF, &QPushButton::clicked, this, &MainWindow::withdraw90);
+
+    disconnect(ui->btnG, &QPushButton::clicked, this, &MainWindow::withdraw140);
+
+    disconnect(ui->btnH, &QPushButton::clicked, this, &MainWindow::withdraw240);
+
+    disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawAmount);
+}

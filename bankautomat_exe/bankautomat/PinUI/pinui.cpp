@@ -7,7 +7,6 @@ PinUI::PinUI(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PinUI)
 {
-    qDebug()<<"pinui buildattu oikein?";
     beep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\beep.wav"));
     beep.setVolume(1.0);
     lowbeep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\lowbeep.wav"));
@@ -31,8 +30,10 @@ void PinUI::on_btnEnter_clicked()
     if(state>=5)
     {
         beep.play();
-        ui->lineEdit->setText(input);
-        emit sendPin(input);
+        QString inputQ = QString::fromStdString(input);
+        qDebug()<<"Lähetetään PIN: "<<inputQ;
+        emit sendPin(inputQ);
+        close();
     }
     else
     {
@@ -51,55 +52,73 @@ void PinUI::on_btnClear_clicked()
 
 void PinUI::on_btn0_clicked()
 {
-    buttonInput('0');
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='0';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+         input+=num;
+          ui->lineEdit->setText("**");
+       }
+       if(state==3)
+       {
+           input+=num;
+           ui->lineEdit->setText("***");
+       }
+       if(state==4)
+       {
+           input+=num;
+           ui->lineEdit->setText("****");
+       }
+       state++;
+    }
 }
 
 void PinUI::on_btn1_clicked()
 {
-    buttonInput('1');
+    if(state>=5)
+    {
+       lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='1';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
 }
 
 void PinUI::on_btn2_clicked()
-{
-    buttonInput('2');
-}
-
-void PinUI::on_btn3_clicked()
-{
-    buttonInput('3');
-}
-
-void PinUI::on_btn4_clicked()
-{
-    buttonInput('4');
-}
-
-void PinUI::on_btn5_clicked()
-{
-    buttonInput('5');
-}
-
-void PinUI::on_btn6_clicked()
-{
-    buttonInput('6');
-}
-
-void PinUI::on_btn7_clicked()
-{
-    buttonInput('7');
-}
-
-void PinUI::on_btn8_clicked()
-{ 
-    buttonInput('8');
-}
-
-void PinUI::on_btn9_clicked()
-{
-    buttonInput('9');
-}
-
-void PinUI::buttonInput(char buttonNum)
 {
     if(state>=5)
     {
@@ -108,24 +127,263 @@ void PinUI::buttonInput(char buttonNum)
     else
     {
         beep.play();
+        char num='2';
         if(state==1)
         {
-            input+=buttonNum;
+            input+=num;
             ui->lineEdit->setText("*");
         }
         if(state==2)
         {
-            input+=buttonNum;
+            input+=num;
             ui->lineEdit->setText("**");
         }
         if(state==3)
         {
-            input+=buttonNum;
+        input+=num;
             ui->lineEdit->setText("***");
         }
         if(state==4)
         {
-            input+=buttonNum;
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn3_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='3';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn4_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='4';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn5_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='5';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn6_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='6';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn7_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='7';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn8_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='8';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
+            ui->lineEdit->setText("****");
+        }
+        state++;
+    }
+}
+
+void PinUI::on_btn9_clicked()
+{
+    if(state>=5)
+    {
+        lowbeep.play();
+    }
+    else
+    {
+        beep.play();
+        char num='9';
+        if(state==1)
+        {
+            input+=num;
+            ui->lineEdit->setText("*");
+        }
+        if(state==2)
+        {
+            input+=num;
+            ui->lineEdit->setText("**");
+        }
+        if(state==3)
+        {
+            input+=num;
+            ui->lineEdit->setText("***");
+        }
+        if(state==4)
+        {
+            input+=num;
             ui->lineEdit->setText("****");
         }
         state++;
