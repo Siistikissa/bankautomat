@@ -31,7 +31,8 @@ void PinUI::on_btnEnter_clicked()
     if(state>=5)
     {
         beep.play();
-        ui->lineEdit->setText(QString::fromStdString(input));
+        ui->lineEdit->setText(input);
+        emit sendPin(input);
     }
     else
     {
@@ -50,312 +51,56 @@ void PinUI::on_btnClear_clicked()
 
 void PinUI::on_btn0_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='0';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-         input+=num;
-          ui->lineEdit->setText("**");
-       }
-       if(state==3)
-       {
-           input+=num;
-           ui->lineEdit->setText("***");
-       }
-       if(state==4)
-       {
-           input+=num;
-           ui->lineEdit->setText("****");
-       }
-       state++;
-    }
+    buttonInput('0');
 }
 
 void PinUI::on_btn1_clicked()
 {
-    if(state>=5)
-    {
-       lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='1';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('1');
 }
 
 void PinUI::on_btn2_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='2';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-        input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('2');
 }
 
 void PinUI::on_btn3_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='3';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('3');
 }
 
 void PinUI::on_btn4_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='4';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('4');
 }
 
 void PinUI::on_btn5_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='5';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('5');
 }
 
 void PinUI::on_btn6_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='6';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('6');
 }
 
 void PinUI::on_btn7_clicked()
 {
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='7';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+    buttonInput('7');
 }
 
 void PinUI::on_btn8_clicked()
-{
-    if(state>=5)
-    {
-        lowbeep.play();
-    }
-    else
-    {
-        beep.play();
-        char num='8';
-        if(state==1)
-        {
-            input+=num;
-            ui->lineEdit->setText("*");
-        }
-        if(state==2)
-        {
-            input+=num;
-            ui->lineEdit->setText("**");
-        }
-        if(state==3)
-        {
-            input+=num;
-            ui->lineEdit->setText("***");
-        }
-        if(state==4)
-        {
-            input+=num;
-            ui->lineEdit->setText("****");
-        }
-        state++;
-    }
+{ 
+    buttonInput('8');
 }
 
 void PinUI::on_btn9_clicked()
 {
+    buttonInput('9');
+}
+
+void PinUI::buttonInput(char buttonNum)
+{
     if(state>=5)
     {
         lowbeep.play();
@@ -363,25 +108,24 @@ void PinUI::on_btn9_clicked()
     else
     {
         beep.play();
-        char num='9';
         if(state==1)
         {
-            input+=num;
+            input+=buttonNum;
             ui->lineEdit->setText("*");
         }
         if(state==2)
         {
-            input+=num;
+            input+=buttonNum;
             ui->lineEdit->setText("**");
         }
         if(state==3)
         {
-            input+=num;
+            input+=buttonNum;
             ui->lineEdit->setText("***");
         }
         if(state==4)
         {
-            input+=num;
+            input+=buttonNum;
             ui->lineEdit->setText("****");
         }
         state++;

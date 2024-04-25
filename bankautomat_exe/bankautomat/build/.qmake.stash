@@ -1,6 +1,11 @@
 QMAKE_CXX.QT_COMPILER_STDCXX = 201703L
+<<<<<<< HEAD
 QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 11
 QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 2
+=======
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 13
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 1
+>>>>>>> 6afe722f8839335934cdbcb06a6f8cd6a2e48a0d
 QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 0
 QMAKE_CXX.COMPILER_MACROS = \
     QT_COMPILER_STDCXX \
@@ -8,6 +13,7 @@ QMAKE_CXX.COMPILER_MACROS = \
     QMAKE_GCC_MINOR_VERSION \
     QMAKE_GCC_PATCH_VERSION
 QMAKE_CXX.INCDIRS = \
+<<<<<<< HEAD
     C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ \
     C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 \
     C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward \
@@ -19,3 +25,16 @@ QMAKE_CXX.LIBDIRS = \
     C:/Qt/Tools/mingw1120_64/lib/gcc \
     C:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/lib \
     C:/Qt/Tools/mingw1120_64/lib
+=======
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++ \
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32 \
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward \
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include \
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed \
+    C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include
+QMAKE_CXX.LIBDIRS = \
+    C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0 \
+    C:/Qt/Tools/mingw1310_64/lib/gcc \
+    C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/lib \
+    C:/Qt/Tools/mingw1310_64/lib
+>>>>>>> 6afe722f8839335934cdbcb06a6f8cd6a2e48a0d
