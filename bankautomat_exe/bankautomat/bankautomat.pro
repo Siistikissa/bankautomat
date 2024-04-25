@@ -42,3 +42,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/PinUI/build/debug/ -lPi
 
 INCLUDEPATH += $$PWD/PinUI
 DEPENDPATH += $$PWD/PinUI
+
+RESOURCES += \
+    images.qrc

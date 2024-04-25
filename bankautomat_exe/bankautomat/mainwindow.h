@@ -39,6 +39,12 @@ private slots:
     void on_btnG_clicked();
     void on_btnH_clicked();
 
+    void on_english_clicked();
+
+    void on_finnish_clicked();
+
+    void on_swedish_clicked();
+
 private:
     void disconnectAllFunctions();
     void startScreen();
@@ -60,7 +66,7 @@ private:
     QString apiState;
     Restapi *api = new Restapi;
     Rfid *rfid = new Rfid;
-    int langueage; //0-2, 0 = english, 1 = finnish, 2 = swedish
+    int language; //0-2, 0 = english, 1 = finnish, 2 = swedish
     //values needed for api communcation
     QString serial;
     QString pin;
