@@ -4,7 +4,7 @@ const accounts = require('../models/accounts_model');
 
 router.get('/',
     function (request, response) {
-        accounts.getAll(function (err, dbResult) {
+        accounts.post(request.body,function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {

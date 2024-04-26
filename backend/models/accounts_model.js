@@ -9,7 +9,7 @@ const accounts = {
   },
   add: function(accounts, callback) {
     return db.query(
-      'select * from accounts where ca_id = ?',
+      'select * from accounts where cu_id = ?',
       [accounts.cu_id],
       callback
     );

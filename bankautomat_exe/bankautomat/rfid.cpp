@@ -9,6 +9,7 @@ Rfid::Rfid()
     PORT->setPortName(portInfo.portName());
     PORT->open(QIODevice::ReadWrite);
     }
+    connect(PORT, PORT->readyRead, this, Rfid::readRfidData);
     }
     else{
         qDebug() << "Cardreader not found!";

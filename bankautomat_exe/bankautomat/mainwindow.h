@@ -74,6 +74,7 @@ private:
     void clearApiData();
     void showOlder();
     void showNewer();
+    bool checkWithdraw();
     void uiRefresh();
     Ui::MainWindow *ui;
     QTimer *timer;
@@ -91,19 +92,18 @@ private:
     QString serial;
     QString pin;
     QString type;
-    QString balance;
-    QString credit;
     std::vector<QString> transactionsVector;
+    double credit;
+    double balance;
+    double withdraw;
     int appState=0;
     int runtime=0;
     int logoutTimer=60;
-    int withdraw=0;
-    int withdrawSum=0;
     int cu_id;
     int ac_id;
     int newAmount;
-    int start;
-    int stop;
+    int start = 0;
+    int stop = 5;
     int transaction;
     bool transactionStopper;
     //dictionary contains multilinquistics
