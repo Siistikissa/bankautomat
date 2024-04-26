@@ -47,7 +47,7 @@ MainWindow::~MainWindow()
 void MainWindow::updateTimer()
 {
     runtime++;
-    qDebug()<<"------------------------------------------------------ application runtime:"<<runtime<<"seconds";
+    //qDebug()<<"------------------------------------------------------ application runtime:"<<runtime<<"seconds";
     if(appState != 0)
     {
         logoutTimer-=1;
@@ -126,7 +126,6 @@ void MainWindow::mainScreen()
     qDebug()<<"mainScreen()..";
     appState=2;
     withdraw=0;
-    withdrawSum=0;
     withdrawInText="";
     language_mainScreen();
     disconnectAllFunctions();
@@ -156,8 +155,9 @@ void MainWindow::showBalance()
     language_showBalance();
     disconnectAllFunctions();
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    api->getAccountBalance(cu_id);
     apiState = "accountBalance";
+    qDebug() << cu_id;
+    api->getAccountBalance(cu_id);
 }
 
 void MainWindow::language_showBalance()
@@ -182,6 +182,7 @@ void MainWindow::showTransactions()
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
     connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::showOlder);
     connect(ui->btnF, &QPushButton::clicked, this, &MainWindow::showNewer);
+    apiState = "transactions";
     api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
 }
 
@@ -232,7 +233,9 @@ void MainWindow::withdrawConfirmation()
     qDebug()<<"withdrawConfirmation()..";
     appState=6;
     language_withdrawConfirmation();
-    withdrawSum = withdraw;
+    if(checkWithdraw()){
+        apiState = "withdraw";
+    api->postWithdraw(type, newAmount, cu_id, transaction, ac_id);
     disconnectAllFunctions();
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
     connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawAmount);
@@ -240,7 +243,12 @@ void MainWindow::withdrawConfirmation()
     QString rivi2 = "€";
     QString combinedText = rivi1 + withdrawInText + rivi2;
     ui->lineEdit->setText(combinedText);
+    }
+    else{
+        ui->lineEdit->setText("insuf funds");//add insuffienct credit
+    }
 }
+
 
 void MainWindow::language_withdrawConfirmation()
 {
@@ -256,9 +264,8 @@ void MainWindow::language_withdrawConfirmation()
 
 void MainWindow::withdrawAmount()
 {
-    qDebug()<<withdrawSum<<"€ nostettu";
+    qDebug()<<withdraw<<"€ nostettu";
     withdraw=0;
-    withdrawSum=0;
     withdrawInText="";
     createKuitti();
     startScreen();
@@ -266,39 +273,51 @@ void MainWindow::withdrawAmount()
 
 void MainWindow::parseApiReply(QString lastReply)
 {
+    qDebug()<<"enter api parser.";
     if(apiState == "login"){
+        qDebug() << "login";
         if(lastReply != "false"){
+            qDebug() << "send next api cmd " << serial;
             api->token = lastReply;
-            api->getAccountId(serial);
-            apiState = "accountId";
+            apiState = "customerId";
+            api->getCustomerId(serial);
         }
         else{
             qDebug() << "Wrong password!";
         }
     }
-    else if(apiState == "accountId"){
+    else if(apiState == "customerId"){
         cu_id = lastReply.toInt();
-        mainScreen();
+        apiState = "accountId";
+        qDebug() << cu_id;
+        api->getAccountId(cu_id);
+    }
+    else if(apiState == "accountId"){
+        ac_id = lastReply.toInt();
+        apiState = "accountBalance";
+        api->getAccountBalance(cu_id);
     }
     else if(apiState == "accountBalance"){
         //parse lastreply to 3
         auto result = lastReply.split(", ");
-        ac_id = result[0].toInt();
-        balance = result[1];
-        credit = credit[2];
-        if(credit == "0"){
+        balance = result[0].toDouble();
+        credit = result[1].toDouble();
+        if(credit == 0){
             type = "balance";
         }
         else{
             type = "credit";
         }
+        mainScreen();
+        /*
         if(type == "balance"){
-            ui->lineEdit->setText(dictionary["Account balance"][language] + balance);
+            ui->lineEdit->setText(dictionary["Account balance"][language] + QString::number(balance));
 
         }
         else if(type == "credit"){
-            ui->lineEdit->setText(dictionary["Account balance"][language] + credit);
+            ui->lineEdit->setText(dictionary["Account balance"][language] + QString::number(credit));
         }
+*/
     }
     else if(apiState == "transactions"){
         ui->lineEdit->setText(dictionary["Account transactions"][language] + "\n");
@@ -324,7 +343,7 @@ void MainWindow::parseApiReply(QString lastReply)
 
 void MainWindow::checkPassword(QString tryPin)
 {
-    qDebug()<<"Syötetty PIN: "<<tryPin;
+    qDebug()<<"Syötetty PIN: "<<tryPin <<serial;
     logoutTimer=60;
     pin = tryPin;
     apiState = "login";
@@ -336,9 +355,9 @@ void MainWindow::clearApiData()
     serial.clear();
     pin.clear();
     type.clear();
-    balance.clear();
-    credit.clear();
     transactionsVector.clear();
+    credit = 0;
+    balance = 0;
     cu_id = 0 ;
     ac_id = 0;
     newAmount = 0;
@@ -355,6 +374,7 @@ void MainWindow::showOlder()
         stop += 5;
     }
 
+    showTransactions();
 
 }
 
@@ -365,7 +385,27 @@ void MainWindow::showNewer()
         stop -= 5;
     }
 
+    showTransactions();
 
+}
+
+bool MainWindow::checkWithdraw()
+{
+    if(type == "balance"){
+        if(balance > withdraw){
+            transaction = withdraw;
+            newAmount = balance-withdraw;
+            return true;
+        }
+    }
+    else if(type == "credit"){
+        if(credit > withdraw){
+            transaction = withdraw;
+            newAmount = credit-withdraw;
+            return true;
+        }
+    }
+    return false;
 }
 
 void MainWindow::createPinUI()

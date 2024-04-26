@@ -19,8 +19,10 @@ public:
     //takes serial and pin. returns token on success. on error return false.
     void postLogin(QString serial, QString pin);
     //takes serial. returns cu_id.
-    void getAccountId(QString serial);
-    //takes cu_id. returns ac_id, balance and credit.
+    void getCustomerId(QString serial);
+    //takes cu_id. returns ac_id.
+    void getAccountId(int cu_id);
+    //takes cu_id. returns balance and credit.
     void getAccountBalance(int cu_id);
     //takes ac_id, start, stop. returns end-start amont of transactions.
     void getTransactions(int ac_id, int start, int stop);
@@ -45,6 +47,7 @@ private:
 
     std::vector<QString> targets;
     QJsonObject jsonObj;
+    QJsonObject emptyJson;
     QNetworkAccessManager *apiManager;
     QNetworkReply *reply;
     QByteArray response_data;

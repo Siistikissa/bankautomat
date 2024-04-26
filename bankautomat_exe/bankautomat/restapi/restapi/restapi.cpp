@@ -29,21 +29,28 @@ void Restapi::postLogin(QString serial, QString pin)
     connect(apiManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(postResponse(QNetworkReply*)));
 }
 
-void Restapi::getAccountId(QString serial)
+void Restapi::getCustomerId(QString serial)
 {
     jsonObj.insert("serial", serial);
+    targets.push_back("cu_id");
     postConnect("http://localhost:3000/cards", jsonObj);
-    targets.push_back("ca_id");
+    connect(apiManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
+}
+
+void Restapi::getAccountId(int cu_id)
+{
+    jsonObj.insert("cu_id", cu_id);
+    targets.push_back("ac_id");
+    postConnect("http://localhost:3000/cards/ac", jsonObj);
     connect(apiManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
 void Restapi::getAccountBalance(int cu_id)
 {
     jsonObj.insert("cu_id", cu_id);
-    postConnect("http://localhost:3000/accounts", jsonObj);
-    targets.push_back("ac_id");
     targets.push_back("balance");
     targets.push_back("credit");
+    postConnect("http://localhost:3000/accounts", jsonObj);
     connect(apiManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
@@ -53,9 +60,9 @@ void Restapi::getTransactions(int ac_id, int start, int stop)
     jsonObj.insert("start", start);
     jsonObj.insert("stop", stop);
     qDebug() << "jsonObj : " <<jsonObj;
-    postConnect("http://localhost:3000/transactions", jsonObj);
     targets.push_back("transaction");
     targets.push_back("tr_date");
+    postConnect("http://localhost:3000/transactions", jsonObj);
     connect(apiManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getResponse(QNetworkReply*)));
 }
 
@@ -80,13 +87,16 @@ void Restapi::getResponse(QNetworkReply *reply)
 
 void Restapi::getResponseEnd(QString responseData)
 {
-    emit replySet(responseData);
+    jsonObj = emptyJson;/*
     for(auto iter = jsonObj.begin(); iter != jsonObj.end();){
         jsonObj.erase(iter);
-    }
+    }*/
+//response_data.clear();
     reply->deleteLater();
     apiManager->deleteLater();
     targets.clear();
+    qDebug() << responseData;
+    emit replySet(responseData);
 }
 
 QJsonArray Restapi::getParserJson(QNetworkReply *reply)
@@ -108,9 +118,12 @@ QString Restapi::getParserQstring(QJsonArray json_array)
             qDebug() << "value : " <<value;
             QJsonObject json_obj = value.toObject();
 
-            if (i != targets.begin() && i != targets.end() || value == json_array[1]){
+            qDebug() << "json_obj " <<json_obj;
+            // value == json_array[1]
+            if (i != targets.begin() && i != targets.end()){
                 data.append(", ");
             }
+            qDebug() << *i;
             QVariant variant = json_obj[*i].toVariant();
             data.append(variant.value<QString>());
             qDebug() << "data : " <<data;
@@ -143,13 +156,19 @@ void Restapi::postConnect(QString site_url, QJsonObject jsonObj)
 
 void Restapi::postResponse(QNetworkReply *reply)
 {
+    qDebug() << "post response";
     response_data=reply->readAll();
-    emit replySet(response_data);
+    qDebug() << "post after signal";
     //qDebug()<<response_data;
+    jsonObj = emptyJson;
+    //response_data.clear();
+    /*
     for(auto iter = jsonObj.begin(); iter != jsonObj.end();){
         jsonObj.erase(iter);
     }
+*/
     qDebug() << "after erase : " << jsonObj;
     reply->deleteLater();
     apiManager->deleteLater();
+    emit replySet(response_data);
 }
