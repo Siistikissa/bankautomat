@@ -4,7 +4,7 @@ const transactions = require('../models/transactions_model');
 
 router.get('/',
     function (request, response) {
-        transactions.getAll(function (err, dbResult) {
+        transactions.getAll(request.params, function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
@@ -16,7 +16,7 @@ router.get('/',
 
 router.get('/:id',
     function (request, response) {
-        transactions.getById(request.params.id, function (err, dbResult) {
+        transactions.getById(request.params, function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
@@ -28,15 +28,38 @@ router.get('/:id',
 
 router.post('/', 
 function(request, response) {
+  //console.log("body : " + request.body)
   transactions.add(request.body, function(err, dbResult) {
     if (err) {
+      console.log("transaction post error : "+ err)
       response.json(err);
     } else {
+      console.log("result : " + dbResult);
       response.json(dbResult);
     }
   });
 });
 
+router.post('/withdraw', 
+function(request, response) {
+  transactions.withdraw(request.body, function(err, dbResult) {
+    if (err) {
+      console.log("withdarw post error : "+ err);
+      response.json(err);
+    } else {
+      transactions.insertTransaction(request.body, function(errInner, dbResultInner){
+        if(errInner){
+          console.log("transactionInsert post error : "+ errInner)
+          response.json(err);
+        }
+        else{
+          console.log("result : " + dbResultInner);
+          response.json(dbResult)
+        }
+      });
+    }
+  });
+});
 
 router.delete('/:id', 
 function(request, response) {

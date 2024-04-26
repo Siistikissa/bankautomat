@@ -33,6 +33,9 @@ private slots:
     void on_btn8_clicked();
     void on_btn9_clicked();
 
+signals:
+    void sendPin(QString);
+
 private:
     QSoundEffect beep;
     QSoundEffect lowbeep;

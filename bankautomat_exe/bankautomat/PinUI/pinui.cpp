@@ -7,7 +7,6 @@ PinUI::PinUI(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PinUI)
 {
-    qDebug()<<"pinui buildattu oikein?";
     beep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\beep.wav"));
     beep.setVolume(1.0);
     lowbeep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\lowbeep.wav"));
@@ -31,7 +30,10 @@ void PinUI::on_btnEnter_clicked()
     if(state>=5)
     {
         beep.play();
-        ui->lineEdit->setText(QString::fromStdString(input));
+        QString inputQ = QString::fromStdString(input);
+        qDebug()<<"Lähetetään PIN: "<<inputQ;
+        emit sendPin(inputQ);
+        close();
     }
     else
     {
