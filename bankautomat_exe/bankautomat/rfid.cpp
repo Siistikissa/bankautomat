@@ -2,33 +2,17 @@
 
 Rfid::Rfid()
 {
+    if(!QSerialPortInfo::availablePorts().isEmpty()){
     foreach (const QSerialPortInfo &portInfo, QSerialPortInfo::availablePorts())
     {
     PORT = new QSerialPort();
     PORT->setPortName(portInfo.portName());
     PORT->open(QIODevice::ReadWrite);
     }
-    //will not work is cardreader is not connected
-    try{
-    connect(PORT, &QSerialPort::readyRead, this, &Rfid::readRfidData);
-
     }
-    catch(...){
-        qDebug() << "HELP HELP HELP!!!!!!!!!";
-    };
-   /* try{
-    if (PORT->isOpen()){
-
-    } else {
-
-        throw 2000;
+    else{
+        qDebug << "Cardreader not found!";
     }
-
-    }
-    catch(...){
-        qDebug() << "Card reader not connected.";
-    };
-*/
 }
 
 Rfid::~Rfid()
