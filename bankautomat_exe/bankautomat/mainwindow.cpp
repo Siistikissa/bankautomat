@@ -135,6 +135,7 @@ void MainWindow::createRfid() {
 void MainWindow::createKuitti()
 {
     Kuitti* KuittiWindow = new Kuitti;
+    KuittiWindow -> setParameters(serial, type, transaction, transactionsVector);
     KuittiWindow->show();
 }
 
