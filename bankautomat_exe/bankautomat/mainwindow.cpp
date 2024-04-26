@@ -379,6 +379,7 @@ void MainWindow::createKuitti()
 {
     printtaus.play();
     Kuitti* KuittiWindow = new Kuitti;
+    KuittiWindow -> setParameters(serial, type, transaction, transactionsVector);
     KuittiWindow->show();
 }
 void MainWindow::createRfid() {

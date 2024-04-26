@@ -10,12 +10,20 @@ Kuitti::Kuitti(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Kuitti)
 {
+
+}
+
+Kuitti::~Kuitti()
+{
+    delete ui;
+}
+
+void Kuitti::setParameters(QString serial, QString type, int transaction, std::vector<QString> transactionsVector)
+{
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout;
-
-    QDir directory("../");
-    QPixmap image = directory.absoluteFilePath("ripped_receipt_1.png");
-
+    QPixmap image("ripped_receipt_1");
+  
     QImage img(image.size(), QImage::Format_ARGB32_Premultiplied);
     img.fill(Qt::transparent);
     QPainter painter(&img);
@@ -46,29 +54,34 @@ Kuitti::Kuitti(QWidget *parent)
     QRect textRect5(10, 120, img.width() - 20, 20);
     painter.drawText(textRect5, Qt::AlignHCenter | Qt::AlignTop, "ATM NUMBER: 80085");
 
-    QRect textRect6(10, 150, img.width() - 20, 20);
-    painter.drawText(textRect6, Qt::AlignLeft | Qt::AlignTop, "CLOCK: ");
+    QRect textRect6(120, 150, img.width() - 20, 20);
+    painter.drawText(textRect6, Qt::AlignLeft | Qt::AlignTop, "CLOCK:");
 
-    QRect textRect7(10, 150, img.width() - 20, 20);
-    painter.drawText(textRect7, Qt::AlignRight | Qt::AlignTop, "HH:MM:SS");
+    for (int i = 0; i < transactionsVector.size(); ++i)
+    {
+        QRect textRect(175, 150, img.width() - 20, 20);
+        painter.drawText(textRect, Qt::AlignLeft | Qt::AlignTop, transactionsVector[i]);
+    }
 
     QRect textRect8(10, 180, img.width() - 20, 20);
     painter.drawText(textRect8, Qt::AlignLeft | Qt::AlignTop, "VESA");
 
-    QRect textRect9(10, 180, img.width() - 20, 20);
-    painter.drawText(textRect9, Qt::AlignRight | Qt::AlignTop, "DEBIT VAI CREDIT");
+    QRect textRect9(50, 180, img.width() - 20, 20);
+    painter.drawText(textRect9, Qt::AlignLeft | Qt::AlignTop, type);
 
     QRect textRect10(10, 210, img.width() - 20, 20);
-    painter.drawText(textRect10, Qt::AlignLeft | Qt::AlignTop, "CUSTOMER:");
+    painter.drawText(textRect10, Qt::AlignLeft | Qt::AlignTop, "CARD NUMBER");
+
+    serial.replace(0, 5, "XXXXX");
 
     QRect textRect11(10, 210, img.width() - 20, 20);
-    painter.drawText(textRect11, Qt::AlignRight | Qt::AlignTop, "NIMI SUKUNIMI");
+    painter.drawText(textRect11, Qt::AlignRight | Qt::AlignTop, serial);
 
-    QRect textRect12(10, 270, img.width() - 20, 20);
-    painter.drawText(textRect12, Qt::AlignLeft | Qt::AlignTop, "TRANSACTION:");
+    QRect textRect14(10, 240, img.width() - 20, 20);
+    painter.drawText(textRect14, Qt::AlignLeft | Qt::AlignTop, "TRANSACTION");
 
-    QRect textRect13(10, 300, img.width() - 20, 20);
-    painter.drawText(textRect13, Qt::AlignRight | Qt::AlignTop, "XXXXXXXXX");
+    QRect textRect15(10, 270, img.width() - 20, 20);
+    painter.drawText(textRect15, Qt::AlignRight | Qt::AlignTop, QString::number(transaction));
 
     QRect textRect19(10, img.height() - 80, img.width() - 20, 20);
     painter.drawText(textRect19, Qt::AlignLeft | Qt::AlignBottom, "---------------------------------------------------------------------");
@@ -85,17 +98,6 @@ Kuitti::Kuitti(QWidget *parent)
     label->setPixmap(QPixmap::fromImage(img));
     layout->addWidget(label);
     setLayout(layout);
-    
+
     qDebug() << "Ikkunan koko:" << this->size();
-
-    /*QDir directory("../bankautomat/");
-    QString pathToPrint = directory.absoluteFilePath("printtaus.wav");
-    printtaus.setSource(QUrl::fromLocalFile(pathToPrint));
-    printtaus.setVolume(1.0);
-    printtaus.play();*/
-}
-
-Kuitti::~Kuitti()
-{
-    delete ui;
 }
