@@ -109,16 +109,16 @@ private:
     std::unordered_map<QString, std::vector<QString>> dictionary = {
         {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
         {"Insert card",std::vector<QString>() = {"Insert card", "Syötä kortti","Sätt i kortet"}},
-                                                  {"Abort transaction",std::vector<QString>() = {"Abort transaction", "Keskytä tapahtuma", "Avbryta transaktionen"}},
-                                                  {"Insert pin",std::vector<QString>() = {"Insert pin", "Syötä pin", "Sätt in stift"}},
-                                                                                           {"Tries left",std::vector<QString>() = {"tries left ", "yrityksiä jäljellä ", "försöker vänster "}},
-                                                                                           {"Account balance",std::vector<QString>() = {"Account balance", "Tilin saldo", "Kontobalans"}},
-                                                                                           {"Account transactions",std::vector<QString>() = {"Account transactions", "Tilin tapahtumat", "Kontotransaktioner"}},
-                                                                                           {"Withdrawal",std::vector<QString>() = {"Withdrawal", "Nosta rahaa", "Uttag"}},
-                                                                                           {"Choose action",std::vector<QString>() = {"Choose action", "Valitse tapahtuma", "Välj åtgärd"}},
-                                                                                                                                       {"Back",std::vector<QString>() = {"Back", "Takaisin", "Tillbaka"}},
-                                                                                                                                       {"Show older",std::vector<QString>() = {"Show older", "Näytä vanhempia", "Visa äldre"}},
-                                                                                                                                                                                {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}}
-                                                                                                                                                                                               };
+        {"Abort transaction",std::vector<QString>() = {"Abort transaction", "Keskytä tapahtuma", "Avbryta transaktionen"}},
+        {"Insert pin",std::vector<QString>() = {"Insert pin", "Syötä pin", "Sätt in stift"}},
+        {"Tries left",std::vector<QString>() = {"tries left ", "yrityksiä jäljellä ", "försöker vänster "}},
+        {"Account balance",std::vector<QString>() = {"Account balance", "Tilin saldo", "Kontobalans"}},
+        {"Account transactions",std::vector<QString>() = {"Account transactions", "Tilin tapahtumat", "Kontotransaktioner"}},
+        {"Withdrawal",std::vector<QString>() = {"Withdrawal", "Nosta rahaa", "Uttag"}},
+        {"Choose action",std::vector<QString>() = {"Choose action", "Valitse tapahtuma", "Välj åtgärd"}},
+        {"Back",std::vector<QString>() = {"Back", "Takaisin", "Tillbaka"}},
+        {"Show older",std::vector<QString>() = {"Show older", "Näytä vanhempia", "Visa äldre"}},
+        {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}}
+    };
 };
 #endif // MAINWINDOW_H

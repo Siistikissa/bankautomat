@@ -11,7 +11,7 @@ Rfid::Rfid()
     }
     }
     else{
-        qDebug << "Cardreader not found!";
+        qDebug() << "Cardreader not found!";
     }
 }
 
