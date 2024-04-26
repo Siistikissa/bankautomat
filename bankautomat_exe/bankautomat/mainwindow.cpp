@@ -408,6 +408,7 @@ bool MainWindow::checkWithdraw()
     return false;
 }
 
+
 void MainWindow::createPinUI()
 {
     PinUI* PinWindow = new PinUI;
@@ -419,6 +420,7 @@ void MainWindow::createKuitti()
 {
     printtaus.play();
     Kuitti* KuittiWindow = new Kuitti;
+    KuittiWindow -> setParameters(serial, type, transaction, transactionsVector);
     KuittiWindow->show();
 }
 void MainWindow::createRfid() {
@@ -507,31 +509,7 @@ void MainWindow::on_english_clicked()
     beep.play();
     logoutTimer=60;
     language = 0;
-    switch (appState) {
-    case 0:
-        language_startScreen();
-        break;
-    case 1:
-        language_pinScreen();
-        break;
-    case 2:
-        language_mainScreen();
-        break;
-    case 3:
-        language_showBalance();
-        break;
-    case 4:
-        language_showTransactions();
-        break;
-    case 5:
-        language_showWithdraw();
-        break;
-    case 6:
-        language_withdrawConfirmation();
-        break;
-    default:
-        break;
-    }
+    uiRefresh();
 }
 
 
@@ -540,31 +518,7 @@ void MainWindow::on_finnish_clicked()
     beep.play();
     logoutTimer=60;
     language = 1;
-    switch (appState) {
-    case 0:
-        language_startScreen();
-        break;
-    case 1:
-        language_pinScreen();
-        break;
-    case 2:
-        language_mainScreen();
-        break;
-    case 3:
-        language_showBalance();
-        break;
-    case 4:
-        language_showTransactions();
-        break;
-    case 5:
-        language_showWithdraw();
-        break;
-    case 6:
-        language_withdrawConfirmation();
-        break;
-    default:
-        break;
-    }
+    uiRefresh();
 }
 
 
@@ -573,6 +527,11 @@ void MainWindow::on_swedish_clicked()
     beep.play();
     logoutTimer=60;
     language = 2;
+    uiRefresh();
+}
+
+void MainWindow::uiRefresh()
+{
     switch (appState) {
     case 0:
         language_startScreen();
