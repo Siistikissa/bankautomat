@@ -22,7 +22,9 @@ void Kuitti::setParameters(QString serial, QString type, int transaction, std::v
 {
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout;
-    QPixmap image("ripped_receipt_1");
+    
+    QDir directory("../");
+    QPixmap image = directory.absoluteFilePath("ripped_receipt_1.png");
   
     QImage img(image.size(), QImage::Format_ARGB32_Premultiplied);
     img.fill(Qt::transparent);
