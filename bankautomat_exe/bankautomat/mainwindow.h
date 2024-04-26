@@ -74,6 +74,7 @@ private:
     void clearApiData();
     void showOlder();
     void showNewer();
+    void uiRefresh();
     Ui::MainWindow *ui;
     QTimer *timer;
     QSoundEffect beep;
