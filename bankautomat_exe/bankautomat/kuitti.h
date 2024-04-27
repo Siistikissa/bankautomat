@@ -27,15 +27,15 @@ private:
     std::unordered_map<QString, std::vector<QString>> dictionary =
         {
         {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
-        {"ATM NUMBER",std::vector<QString>() = {"ATM NUMBER", "PANKKIAUTOMAATTI NUMERO","ATM NUMMER"}},
-        {"CLOCK",std::vector<QString>() = {"CLOCK", "KELLO", "KLOCKA"}},
+        {"ATM NUMBER",std::vector<QString>() = {"ATM NUMBER", "AUTOMAATTINUMERO", "ATM-NUMMER"}},
+        {"DATE",std::vector<QString>() = {"DATE", "PVM", "DATUM"}},
+        {"REFERENCE",std::vector<QString>() = {"REFERENCE", "VIITE", "REFERENS"}},
         {"CARD NUMBER",std::vector<QString>() = {"CARD NUMBER", "KORTIN NUMERO", "KORTNUMMER"}},
-        {"TRANSACTION",std::vector<QString>() = {"TRANSACTION", "TAPAHTUMA", "TRANSAKTION"}},
-        {"TOTAL",std::vector<QString>() = {"TOTAL", "YHTEENSÄ", "SAMMANLAGT"}},
-        {"",std::vector<QString>() = {"", "", ""}},
-        {"",std::vector<QString>() = {"", "", ""}},
-        {"",std::vector<QString>() = {"", "", ""}},
-        {"",std::vector<QString>() = {"", "", ""}},
+        {"REFERENCE NUMBER",std::vector<QString>() = {"REFERENCE NUMBER", "VIITENUMERO", "REFERENSNUMMER"}},
+        {"WITHDRAWAL",std::vector<QString>() = {"WITHDRAWAL", "SUMMA", "UTTAG"}},
+        {"AMOUNT",std::vector<QString>() = {"AMOUNT", "SUMMA", "BELOPP"}},
+        {"THANK YOU FOR STOPPING BY",std::vector<QString>() = {"THANK YOU FOR STOPPING BY", "KIITOS KÄYNNISTÄ", "TACK FÖR BESÖKET"}},
+        {"WELCOME AGAIN!",std::vector<QString>() = {"WELCOME AGAIN!", "TERVETULOA UUDELLEEN!", "VÄLKOMMEN TILLBAKA!"}},
         {"",std::vector<QString>() = {"", "", ""}},
         {"",std::vector<QString>() = {"", "", ""}}
 

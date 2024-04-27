@@ -33,7 +33,7 @@ void Kuitti::setParameters(QString serial, QString type, int transaction, std::v
 
     QFont originalFont = painter.font();
 
-    QRect textRect1(10, 25, img.width() - 20, 20);
+    QRect textRect1(10, 70, img.width() - 20, 20);
     painter.setPen(Qt::black);
     painter.drawText(textRect1, Qt::AlignJustify | Qt::AlignTop, "-----------------------------------------------------------------------");
 
@@ -42,57 +42,116 @@ void Kuitti::setParameters(QString serial, QString type, int transaction, std::v
     font.setBold(true);
     painter.setFont(font);
 
-    QRect textRect2(10, 40, img.width() - 20, 20);
+    QRect textRect2(10, 90, img.width() - 20, 20);
     painter.drawText(textRect2, Qt::AlignHCenter | Qt::AlignTop, "PANKKIAUTOMAATTI");
 
     painter.setFont(originalFont);
 
-    QRect textRect3(10, 60, img.width() - 20, 20);
+    QRect textRect3(10, 110, img.width() - 20, 20);
     painter.drawText(textRect3, Qt::AlignJustify | Qt::AlignTop, "----------------------------------------------------------------------");
 
-    QRect textRect4(10, 90, img.width() - 20, 20);
+    QRect textRect4(10, 130, img.width() - 20, 20);
     painter.drawText(textRect4, Qt::AlignHCenter | Qt::AlignTop, "PARATIISITIE 13");
 
-    QRect textRect5(10, 120, img.width() - 20, 20);
+    QRect textRect45(10, 150, img.width() - 20, 20);
+    painter.drawText(textRect45, Qt::AlignHCenter | Qt::AlignTop, "99999, ANKKALINNA");
+
+    QRect textRect5(10, 170, img.width() - 20, 20);
     painter.drawText(textRect5, Qt::AlignHCenter | Qt::AlignTop, "ATM NUMBER: 80085");
 
-    QRect textRect6(120, 150, img.width() - 20, 20);
-    painter.drawText(textRect6, Qt::AlignLeft | Qt::AlignTop, "CLOCK:");
+    QRect textRect6(10, 205, img.width() - 20, 20);
+    painter.drawText(textRect6, Qt::AlignLeft | Qt::AlignTop, "DATE:");
 
-    for (int i = 0; i < transactionsVector.size(); ++i)
+    QDate date = QDate::currentDate();
+    QString dateString = date.toString("dd.MM.yyyy");
+
+    QRect textRect7(10, 220, img.width() - 20, 20);
+    painter.drawText(textRect7, Qt::AlignLeft | Qt::AlignTop, dateString);
+
+    QRect textRect8(90, 205, img.width() - 20, 20);
+    painter.drawText(textRect8, Qt::AlignLeft | Qt::AlignTop, "CLOCK:");
+
+    QTime currentTime = QTime::currentTime();
+    QString currentTimeString = currentTime.toString("hh:mm:ss");
+
+    QRect textRect9(90, 220, img.width() - 20, 20);
+    painter.drawText(textRect9, Qt::AlignLeft | Qt::AlignTop, currentTimeString);
+
+    QRect textRect10(160, 205, img.width() - 20, 20);
+    painter.drawText(textRect10, Qt::AlignLeft | Qt::AlignTop, "REFERENCE:");
+
+    QString reference;
+    for (int i = 0; i < 4; ++i)
     {
-        QRect textRect(175, 150, img.width() - 20, 20);
-        painter.drawText(textRect, Qt::AlignLeft | Qt::AlignTop, transactionsVector[i]);
+        int randomNumber = rand() % 10;
+        reference += QString::number(randomNumber);
     }
 
-    QRect textRect8(10, 180, img.width() - 20, 20);
-    painter.drawText(textRect8, Qt::AlignLeft | Qt::AlignTop, "VESA");
+    QRect textRect11(160, 220, img.width() - 20, 20);
+    painter.drawText(textRect11, Qt::AlignLeft | Qt::AlignTop, reference);
 
-    QRect textRect9(50, 180, img.width() - 20, 20);
-    painter.drawText(textRect9, Qt::AlignLeft | Qt::AlignTop, type);
+    QRect textRect12(10, 250, img.width() - 20, 20);
+    painter.drawText(textRect12, Qt::AlignLeft | Qt::AlignTop, "VISA");
 
-    QRect textRect10(10, 210, img.width() - 20, 20);
-    painter.drawText(textRect10, Qt::AlignLeft | Qt::AlignTop, "CARD NUMBER");
+    QRect textRect120(135, 250, img.width() - 20, 20);
+    painter.drawText(textRect120, Qt::AlignLeft | Qt::AlignTop, ":");
+
+    QRect textRect13(150, 250, img.width() - 20, 20);
+    painter.drawText(textRect13, Qt::AlignLeft | Qt::AlignTop, type);
+
+    QRect textRect14(10, 265, img.width() - 20, 20);
+    painter.drawText(textRect14, Qt::AlignLeft | Qt::AlignTop, "CARD NUMBER");
+
+    QRect textRect140(135, 265, img.width() - 20, 20);
+    painter.drawText(textRect140, Qt::AlignLeft | Qt::AlignTop, ":");
 
     serial.replace(0, 5, "XXXXX");
 
-    QRect textRect11(10, 210, img.width() - 20, 20);
-    painter.drawText(textRect11, Qt::AlignRight | Qt::AlignTop, serial);
+    QRect textRect15(150, 265, img.width() - 20, 20);
+    painter.drawText(textRect15, Qt::AlignLeft | Qt::AlignTop, serial);
 
-    QRect textRect14(10, 240, img.width() - 20, 20);
-    painter.drawText(textRect14, Qt::AlignLeft | Qt::AlignTop, "TRANSACTION");
+    QRect textRect16(10, 280, img.width() - 20, 20);
+    painter.drawText(textRect16, Qt::AlignLeft | Qt::AlignTop, "REFERENCE NUMBER");
 
-    QRect textRect15(10, 270, img.width() - 20, 20);
-    painter.drawText(textRect15, Qt::AlignRight | Qt::AlignTop, QString::number(transaction));
+    QRect textRect160(135, 280, img.width() - 20, 20);
+    painter.drawText(textRect160, Qt::AlignLeft | Qt::AlignTop, ":");
 
-    QRect textRect19(10, img.height() - 80, img.width() - 20, 20);
-    painter.drawText(textRect19, Qt::AlignLeft | Qt::AlignBottom, "---------------------------------------------------------------------");
+    QString referenceNumber;
+    for (int i = 0; i < 12; ++i)
+    {
+        int randomNumber = rand() % 10;
+        referenceNumber += QString::number(randomNumber);
+    }
 
-    QRect textRect20(10, img.height() - 60, img.width() - 20, 20);
-    painter.drawText(textRect20, Qt::AlignLeft | Qt::AlignBottom, "TOTAL:");
+    QRect textRect17(150, 280, img.width() - 20, 20);
+    painter.drawText(textRect17, Qt::AlignLeft | Qt::AlignTop, referenceNumber);
 
-    QRect textRect21(10, img.height() - 60, img.width() - 20, 20);
-    painter.drawText(textRect21, Qt::AlignRight | Qt::AlignBottom, "XXXXXXXX");
+    QFont font1;
+    font1.setPointSize(12);
+    font1.setBold(true);
+    painter.setFont(font1);
+
+    QRect textRect18(10, 300, img.width() - 20, 20);
+    painter.drawText(textRect18, Qt::AlignHCenter | Qt::AlignTop, "WITHDRAWAL");
+
+    painter.setFont(originalFont);
+
+    QRect textRect19(10, 330, img.width() - 20, 20);
+    painter.drawText(textRect19, Qt::AlignLeft | Qt::AlignTop, "AMOUNT");
+
+    QRect textRect20(10, 330, img.width() - 20, 20);
+    painter.drawText(textRect20, Qt::AlignRight | Qt::AlignTop, QString::number(transaction));
+
+    QFont boldFont;
+    boldFont.setPointSize(12);
+    boldFont.setBold(true);
+
+    QRect textRect21(10, img.height() - 80, img.width() - 20, 20);
+    painter.setFont(boldFont);
+    painter.drawText(textRect21, Qt::AlignHCenter | Qt::AlignBottom, "THANK YOU FOR STOPPING BY");
+
+    QRect textRect22(10, img.height() - 50, img.width() - 20, 20);
+    painter.drawText(textRect22, Qt::AlignHCenter | Qt::AlignBottom, "WELCOME AGAIN!");
 
     painter.end();
 
@@ -103,3 +162,4 @@ void Kuitti::setParameters(QString serial, QString type, int transaction, std::v
 
     qDebug() << "Ikkunan koko:" << this->size();
 }
+

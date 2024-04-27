@@ -80,7 +80,7 @@ void MainWindow::startScreen()
 
 void MainWindow::language_startScreen()
 {
-    ui->lineEdit->setText(dictionary["Insert card"][language]);
+    ui->textEdit->setText(dictionary["Insert card"][language]);
     ui->btnA->setText("");
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -105,6 +105,8 @@ void MainWindow::pinScreen(QString cNum)
 void MainWindow::language_pinScreen()
 {
     ui->lineEdit->setText(dictionary["Wrong pin"][language]);
+
+    ui->textEdit->setText(dictionary["Insert pin"][language] + ": " + pinAttempts + " " + dictionary["Tries left"][language] );
     ui->btnA->setText(dictionary["Abort transaction"][language]);
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -130,7 +132,7 @@ void MainWindow::mainScreen()
 
 void MainWindow::language_mainScreen()
 {
-    ui->lineEdit->setText(dictionary["Choose action"][language]);
+    ui->textEdit->setText(dictionary["Choose action"][language]);
     ui->btnA->setText(dictionary["Abort transaction"][language]);
     ui->btnB->setText(dictionary["Account balance"][language]);
     ui->btnC->setText(dictionary["Account transactions"][language]);
@@ -155,6 +157,13 @@ void MainWindow::language_showBalance()
 {
     ui->btnA->setText(dictionary["Back"][language]);
     ui->btnB->setText("");
+            if(type == "balance"){
+            ui->textEdit->setText(dictionary["Account balance"][language] + " " + QString::number(balance) + "€");
+
+        }
+        else if(type == "credit"){
+            ui->textEdit->setText(dictionary["Account balance"][language] + " " + QString::number(credit) + "€");
+        }
     ui->btnC->setText("");
     ui->btnD->setText("");
     ui->btnE->setText("");
@@ -230,10 +239,10 @@ void MainWindow::withdrawConfirmation()
     QString rivi1 = "Withdrawing: ";
     QString rivi2 = "€";
     QString combinedText = rivi1 + withdrawInText + rivi2;
-    ui->lineEdit->setText(combinedText);
+    ui->textEdit->setText(combinedText);
     }
     else{
-        ui->lineEdit->setText(dictionary["Insufficient funds"][language]);//add insuffienct credit
+        ui->textEdit->setText(dictionary["Insufficient funds"][language]);//add insuffienct credit
         ui->btnE->setText("");
         disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
     }
@@ -296,24 +305,27 @@ void MainWindow::parseApiReply(QString lastReply)
         else{
             type = "credit";
         }
+        apiState= "nothing";
         mainScreen();
     }
     else if(apiState == "transactions"){
-        ui->lineEdit->setText(dictionary["Account transactions"][language] + "\n");
+        ui->textEdit->setText(dictionary["Account transactions"][language] + "\n");
         QString oldText;
-        auto result = lastReply.split(", ");
+        QList<QString> result = lastReply.split(", ");
         if(lastReply.isEmpty()){
             transactionStopper = true;
         }
         else{
             transactionStopper = false;
         }
-
+        QString displaytext;
         for (int i = 0; i<result.length()/2; i++){
-            oldText = ui->lineEdit->text();
+            displaytext += result[i] + ", " + result[(result.length()/2)+i] + "\n";
             transactionsVector.push_back( result[i] + ", " + result[(result.length()/2)+i]);
-            ui->lineEdit->setText(oldText + result[i] + ", " + result[(result.length()/2)+i] + "\n");
+            qDebug() << "resutl i : " << i << " " << result[i] << " " << result[(result.length()/2)+i];
         }
+        ui->textEdit->setText(displaytext);
+        displaytext.clear();
     }
     else if(apiState == "withdraw"){
 
@@ -411,6 +423,19 @@ void MainWindow::createRfid() {
 void MainWindow::on_RFIDButton_clicked()
 {
     pinScreen("060006491");
+
+}
+
+void MainWindow::on_PINButton_clicked()
+{
+    appState=2;
+    mainScreen();
+}
+
+
+void MainWindow::on_KuittiButton_clicked()
+{
+    qDebug()<<"tulostetaan tyhjä kuitti..";
 }
 
 void MainWindow::on_btnA_clicked()
@@ -534,7 +559,7 @@ void MainWindow::setUiTextBalance()
     }
     QString chooseSum2 = "€";
     QString combinedText = chooseSum1 + withdrawInText + chooseSum2;
-    ui->lineEdit->setText(combinedText);
+    ui->textEdit->setText(combinedText);
 }
 
 void MainWindow::withdraw20()
