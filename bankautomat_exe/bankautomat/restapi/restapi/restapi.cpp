@@ -120,7 +120,7 @@ QString Restapi::getParserQstring(QJsonArray json_array)
 
             qDebug() << "json_obj " <<json_obj;
             // value == json_array[1]
-            if (i != targets.begin() && i != targets.end()){
+            if ((i != targets.begin() && i != targets.end()) || (value != json_array[0] && value != json_array[json_array.size()])){
                 data.append(", ");
             }
             qDebug() << *i;
