@@ -16,6 +16,7 @@ router.post('/',
             response.json(dbError);
           }
           else{
+            console.log(dbResult);
             if (dbResult.length > 0) {
               bcrypt.compare(pass,dbResult[0].pin, function(err,compareResult) {
                 if(compareResult) {
@@ -31,7 +32,7 @@ router.post('/',
               );
             }
             else{
-              console.log("user does not exists");
+              console.log("user does not exist");
               response.send(false);
             }
           }
