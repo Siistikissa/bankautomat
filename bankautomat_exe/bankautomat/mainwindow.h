@@ -107,7 +107,6 @@ private:
         {"Insert card",std::vector<QString>() = {"Insert card", "Syötä kortti","Sätt i kortet"}},
         {"Abort transaction",std::vector<QString>() = {"Abort transaction", "Keskytä tapahtuma", "Avbryta transaktionen"}},
         {"Insert pin",std::vector<QString>() = {"Insert pin", "Syötä pin", "Sätt in stift"}},
-        {"Tries left",std::vector<QString>() = {"tries left ", "yrityksiä jäljellä ", "försöker vänster "}},
         {"Account balance",std::vector<QString>() = {"Account balance", "Tilin saldo", "Kontobalans"}},
         {"Account transactions",std::vector<QString>() = {"Account transactions", "Tilin tapahtumat", "Kontotransaktioner"}},
         {"Withdrawal",std::vector<QString>() = {"Withdrawal", "Nosta rahaa", "Uttag"}},

@@ -89,6 +89,7 @@ void MainWindow::language_startScreen()
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 void MainWindow::pinScreen(QString cNum)
@@ -104,9 +105,7 @@ void MainWindow::pinScreen(QString cNum)
 
 void MainWindow::language_pinScreen()
 {
-    ui->lineEdit->setText(dictionary["Wrong pin"][language]);
-
-    ui->textEdit->setText(dictionary["Insert pin"][language] + ": " + pinAttempts + " " + dictionary["Tries left"][language] );
+    ui->textEdit->setText(dictionary["Wrong pin"][language]);
     ui->btnA->setText(dictionary["Abort transaction"][language]);
     ui->btnB->setText("");
     ui->btnC->setText("");
@@ -115,6 +114,7 @@ void MainWindow::language_pinScreen()
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 void MainWindow::mainScreen()
@@ -141,16 +141,17 @@ void MainWindow::language_mainScreen()
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 void MainWindow::showBalance()
 {
     appState=3;
-    language_showBalance();
     disconnectAllFunctions();
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    apiState = "accountBalance";
-    api->getAccountBalance(cu_id);
+    //apiState = "accountBalance";
+    //api->getAccountBalance(cu_id);
+    language_showBalance();
 }
 
 void MainWindow::language_showBalance()
@@ -170,6 +171,7 @@ void MainWindow::language_showBalance()
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 
@@ -195,6 +197,7 @@ void MainWindow::language_showTransactions()
     ui->btnF->setText(dictionary["Show newer"][language]);
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 
@@ -224,6 +227,7 @@ void MainWindow::language_showWithdraw()
     ui->btnF->setText("90€");
     ui->btnG->setText("140€");
     ui->btnH->setText("240€");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 void MainWindow::withdrawConfirmation()
@@ -259,6 +263,7 @@ void MainWindow::language_withdrawConfirmation()
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
+    ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
 void MainWindow::withdrawAmount()
@@ -308,28 +313,29 @@ void MainWindow::parseApiReply(QString lastReply)
         apiState= "nothing";
         mainScreen();
     }
-    else if(apiState == "transactions"){
+    else if (apiState == "transactions") {
         ui->textEdit->setText(dictionary["Account transactions"][language] + "\n");
-        QString oldText;
-        QList<QString> result = lastReply.split(", ");
-        if(lastReply.isEmpty()){
+        QString displayText;
+
+        QStringList result = lastReply.split(", ");
+        if (result.isEmpty()) {
             transactionStopper = true;
-        }
-        else{
+        } else {
             transactionStopper = false;
         }
-        QString displaytext;
-        for (int i = 0; i<result.length()/2; i++){
-            displaytext += result[i] + ", " + result[(result.length()/2)+i] + "\n";
-            transactionsVector.push_back( result[i] + ", " + result[(result.length()/2)+i]);
-            qDebug() << "resutl i : " << i << " " << result[i] << " " << result[(result.length()/2)+i];
-        }
-        ui->textEdit->setText(displaytext);
-        displaytext.clear();
-    }
-    else if(apiState == "withdraw"){
 
+        for (int i = 0; i < result.length() / 2; ++i) {
+            QString timestamp = QDateTime::fromString(result[result.length() / 2 + i], Qt::ISODate).toString("yyyy-MM-dd, hh:mm:ss");
+            QString transactionEntry = result[i] + " €, " + timestamp;
+                                           displayText += transactionEntry + "\n";
+            transactionsVector.push_back(transactionEntry);
+            qDebug() << "Transaction entry " << i << ": " << transactionEntry;
+        }
+
+        ui->textEdit->setText(displayText);
     }
+
+
 }
 
 void MainWindow::checkPassword(QString tryPin)
@@ -424,18 +430,6 @@ void MainWindow::on_RFIDButton_clicked()
 {
     pinScreen("060006491");
 
-}
-
-void MainWindow::on_PINButton_clicked()
-{
-    appState=2;
-    mainScreen();
-}
-
-
-void MainWindow::on_KuittiButton_clicked()
-{
-    qDebug()<<"tulostetaan tyhjä kuitti..";
 }
 
 void MainWindow::on_btnA_clicked()
@@ -560,6 +554,8 @@ void MainWindow::setUiTextBalance()
     QString chooseSum2 = "€";
     QString combinedText = chooseSum1 + withdrawInText + chooseSum2;
     ui->textEdit->setText(combinedText);
+    ui->textEdit->setAlignment(Qt::AlignCenter);
+
 }
 
 void MainWindow::withdraw20()
