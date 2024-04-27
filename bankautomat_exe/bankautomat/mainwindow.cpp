@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     timer = new QTimer(this);
     timer->start(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    //setup paths to sounds
+    //setup paths to sounds and images
     QDir directory("../");
     QPixmap flag_of_uk = directory.absoluteFilePath("Flag_of_the_United_Kingdom.png");
     QIcon englishIcon(flag_of_uk);
@@ -30,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
     printtaus.setSource(QUrl::fromLocalFile(pathToPrinttaus));
     printtaus.setVolume(1.0);
     //connect debug buttons
-    connect(ui->KuittiButton, &QPushButton::clicked, this, &MainWindow::createKuitti);
-    connect(ui->SerialButton, &QPushButton::clicked, this, &MainWindow::createRfid);
     connect(api, &Restapi::replySet, this, &MainWindow::parseApiReply);
     //connect rfid reader and start the aplication
     connect(rfid, &Rfid::cardNumber, this, &MainWindow::pinScreen);
@@ -46,8 +44,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTimer()
 {
-    runtime++;
-    //qDebug()<<"------------------------------------------------------ application runtime:"<<runtime<<"seconds";
     if(appState != 0)
     {
         logoutTimer-=1;
@@ -76,7 +72,6 @@ void MainWindow::updateTimer()
 
 void MainWindow::startScreen()
 {
-    qDebug()<<"startScreen()..";
     appState=0;
     language_startScreen();
     disconnectAllFunctions();
@@ -98,7 +93,6 @@ void MainWindow::language_startScreen()
 
 void MainWindow::pinScreen(QString cNum)
 {
-    qDebug()<<"pinScreen()..";
     logoutTimer=60;
     appState=1;
     language_pinScreen();
@@ -110,6 +104,8 @@ void MainWindow::pinScreen(QString cNum)
 
 void MainWindow::language_pinScreen()
 {
+    ui->lineEdit->setText(dictionary["Wrong pin"][language]);
+
     ui->textEdit->setText(dictionary["Insert pin"][language] + ": " + pinAttempts + " " + dictionary["Tries left"][language] );
     ui->btnA->setText(dictionary["Abort transaction"][language]);
     ui->btnB->setText("");
@@ -123,7 +119,6 @@ void MainWindow::language_pinScreen()
 
 void MainWindow::mainScreen()
 {
-    qDebug()<<"mainScreen()..";
     appState=2;
     withdraw=0;
     withdrawInText="";
@@ -150,14 +145,12 @@ void MainWindow::language_mainScreen()
 
 void MainWindow::showBalance()
 {
-    qDebug()<<"showBalance()..";
     appState=3;
     language_showBalance();
     disconnectAllFunctions();
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    //apiState = "accountBalance";
-    qDebug() << cu_id;
-    //api->getAccountBalance(cu_id);
+    apiState = "accountBalance";
+    api->getAccountBalance(cu_id);
 }
 
 void MainWindow::language_showBalance()
@@ -182,7 +175,6 @@ void MainWindow::language_showBalance()
 
 void MainWindow::showTransactions()
 {
-    qDebug()<<"showTransactions()..";
     appState=4;
     language_showTransactions();
     disconnectAllFunctions();
@@ -208,7 +200,6 @@ void MainWindow::language_showTransactions()
 
 void MainWindow::showWithdraw()
 {
-    qDebug()<<"showTransactions()..";
     appState=5;
     language_showWithdraw();
     disconnectAllFunctions();
@@ -237,7 +228,6 @@ void MainWindow::language_showWithdraw()
 
 void MainWindow::withdrawConfirmation()
 {
-    qDebug()<<"withdrawConfirmation()..";
     appState=6;
     language_withdrawConfirmation();
     if(checkWithdraw()){
@@ -252,7 +242,9 @@ void MainWindow::withdrawConfirmation()
     ui->textEdit->setText(combinedText);
     }
     else{
-        ui->textEdit->setText("insuf funds");//add insuffienct credit
+        ui->textEdit->setText(dictionary["Insufficient funds"][language]);//add insuffienct credit
+        ui->btnE->setText("");
+        disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
     }
 }
 
@@ -263,7 +255,7 @@ void MainWindow::language_withdrawConfirmation()
     ui->btnB->setText("");
     ui->btnC->setText("");
     ui->btnD->setText("");
-    ui->btnE->setText("Confirm");
+    ui->btnE->setText(dictionary["Confirm"][language]);
     ui->btnF->setText("");
     ui->btnG->setText("");
     ui->btnH->setText("");
@@ -271,7 +263,6 @@ void MainWindow::language_withdrawConfirmation()
 
 void MainWindow::withdrawAmount()
 {
-    qDebug()<<withdraw<<"€ nostettu";
     withdraw=0;
     withdrawInText="";
     createKuitti();
@@ -280,7 +271,6 @@ void MainWindow::withdrawAmount()
 
 void MainWindow::parseApiReply(QString lastReply)
 {
-    qDebug()<<"enter api parser.";
     if(apiState == "login"){
         qDebug() << "login";
         if(lastReply != "false"){
@@ -317,15 +307,6 @@ void MainWindow::parseApiReply(QString lastReply)
         }
         apiState= "nothing";
         mainScreen();
-        /*
-        if(type == "balance"){
-            ui->textEdit->setText(dictionary["Account balance"][language] + QString::number(balance));
-
-        }
-        else if(type == "credit"){
-            ui->textEdit->setText(dictionary["Account balance"][language] + QString::number(credit));
-        }
-*/
     }
     else if(apiState == "transactions"){
         ui->textEdit->setText(dictionary["Account transactions"][language] + "\n");
@@ -353,7 +334,6 @@ void MainWindow::parseApiReply(QString lastReply)
 
 void MainWindow::checkPassword(QString tryPin)
 {
-    qDebug()<<"Syötetty PIN: "<<tryPin <<serial;
     logoutTimer=60;
     pin = tryPin;
     apiState = "login";
@@ -433,6 +413,7 @@ void MainWindow::createKuitti()
     KuittiWindow -> setParameters(serial, type, transaction, transactionsVector);
     KuittiWindow->show();
 }
+
 void MainWindow::createRfid() {
     Rfid* RfidWindow = new Rfid;
     RfidWindow->show();
@@ -441,10 +422,8 @@ void MainWindow::createRfid() {
 
 void MainWindow::on_RFIDButton_clicked()
 {
-    qDebug()<<"*kortti 0000411932 syötetty koneeseen..";
-    //RFIDpressed = true;
-
     pinScreen("060006491");
+
 }
 
 void MainWindow::on_PINButton_clicked()
@@ -461,56 +440,48 @@ void MainWindow::on_KuittiButton_clicked()
 
 void MainWindow::on_btnA_clicked()
 {
-    qDebug()<<"A-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnB_clicked()
 {
-    qDebug()<<"B-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnC_clicked()
 {
-    qDebug()<<"C-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnD_clicked()
 {
-    qDebug()<<"D-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnE_clicked()
 {
-    qDebug()<<"E-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnF_clicked()
 {
-    qDebug()<<"F-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnG_clicked()
 {
-    qDebug()<<"G-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
 
 void MainWindow::on_btnH_clicked()
 {
-    qDebug()<<"H-toimintoa painettu..";
     beep.play();
     logoutTimer=60;
 }
@@ -572,7 +543,6 @@ void MainWindow::uiRefresh()
 
 void MainWindow::setUiTextBalance()
 {
-    qDebug()<<"setUiTextBalance()..";
     withdrawInText = QString::number(withdraw);
     QString chooseSum1 = "";
     if(language==0)

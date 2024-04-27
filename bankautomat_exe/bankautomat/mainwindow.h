@@ -32,8 +32,6 @@ public slots:
 private slots:
     void updateTimer();
     void on_RFIDButton_clicked();
-    void on_PINButton_clicked();
-    void on_KuittiButton_clicked();
     void on_btnA_clicked();
     void on_btnB_clicked();
     void on_btnC_clicked();
@@ -81,14 +79,12 @@ private:
     QSoundEffect beep;
     QSoundEffect lowbeep;
     QSoundEffect printtaus;
-    bool RFIDpressed = false;
     QString withdrawInText;
     QString apiState;
     Restapi *api = new Restapi;
     Rfid *rfid = new Rfid;
     int language; //0-2, 0 = english, 1 = finnish, 2 = swedish
     //values needed for api communcation
-    QString pinAttempts = "3";
     QString serial;
     QString pin;
     QString type;
@@ -97,7 +93,6 @@ private:
     double balance;
     double withdraw;
     int appState=0;
-    int runtime=0;
     int logoutTimer=60;
     int cu_id;
     int ac_id;
@@ -119,7 +114,10 @@ private:
         {"Choose action",std::vector<QString>() = {"Choose action", "Valitse tapahtuma", "Välj åtgärd"}},
         {"Back",std::vector<QString>() = {"Back", "Takaisin", "Tillbaka"}},
         {"Show older",std::vector<QString>() = {"Show older", "Näytä vanhempia", "Visa äldre"}},
-        {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}}
+        {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}},
+        {"Confirm",std::vector<QString>() = {"Confirm", "Vahvista", "Bekräfta"}},
+        {"Wrong pin",std::vector<QString>() = {"Wrong pin", "Väärä pin", "Fel stift"}},
+        {"Insufficient funds",std::vector<QString>() = {"Insufficient funds", "Ei riittävästi katetta", "Otillräckliga medel"}}
     };
 };
 #endif // MAINWINDOW_H
