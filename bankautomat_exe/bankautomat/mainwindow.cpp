@@ -76,8 +76,6 @@ void MainWindow::startScreen()
     language_startScreen();
     disconnectAllFunctions();
     ui->logoutInfo->setText("");
-
-    connect(api, SIGNAL(sendBalance(QString)), this, SLOT(saveBalance(QString)));
 }
 
 void MainWindow::language_startScreen()
