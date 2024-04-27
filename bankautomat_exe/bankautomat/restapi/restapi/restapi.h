@@ -51,7 +51,6 @@ private:
     QNetworkAccessManager *apiManager;
     QNetworkReply *reply;
     QByteArray response_data;
-    QString balance;
 };
 
 #endif // RESTAPI_H

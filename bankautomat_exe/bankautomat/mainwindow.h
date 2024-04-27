@@ -88,7 +88,6 @@ private:
     QString serial;
     QString pin;
     QString type;
-    QString receivedBalance;
     std::vector<QString> transactionsVector;
     double credit;
     double balance;
