@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    timer = new QTimer(this);
+    timer = new QTimer(this); //creates a Qtimer for automatic logout
     timer->start(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTimer()));
     //setup paths to sounds and images
