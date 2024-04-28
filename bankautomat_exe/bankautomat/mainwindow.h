@@ -116,7 +116,8 @@ private:
         {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}},
         {"Confirm",std::vector<QString>() = {"Confirm", "Vahvista", "Bekräfta"}},
         {"Wrong pin",std::vector<QString>() = {"Wrong pin", "Väärä pin", "Fel stift"}},
-        {"Insufficient funds",std::vector<QString>() = {"Insufficient funds", "Ei riittävästi katetta", "Otillräckliga medel"}}
+        {"Insufficient funds",std::vector<QString>() = {"Insufficient funds", "Ei riittävästi katetta", "Otillräckliga medel"}},
+        {"Choose sum",std::vector<QString>() = {"Choose sum: ", "Valitse summa: ", "Välj summa: "}}
     };
 };
 #endif // MAINWINDOW_H
