@@ -7,9 +7,12 @@ PinUI::PinUI(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PinUI)
 {
-    beep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\beep.wav"));
+    QDir directory("../");
+    QString pathToBeep = directory.absoluteFilePath("beep.wav");
+    QString pathToLowBeep = directory.absoluteFilePath("lowbeep.wav");
+    beep.setSource(QUrl::fromLocalFile(pathToBeep));
     beep.setVolume(1.0);
-    lowbeep.setSource(QUrl::fromLocalFile("C:\\projektit\\pankkiautomaatti\\SPL_Group8\\bankautomat_exe\\bankautomat\\lowbeep.wav"));
+    lowbeep.setSource(QUrl::fromLocalFile(pathToLowBeep));
     lowbeep.setVolume(1.0);
     ui->setupUi(this);
 }
@@ -31,7 +34,6 @@ void PinUI::on_btnEnter_clicked()
     {
         beep.play();
         QString inputQ = QString::fromStdString(input);
-        qDebug()<<"Lähetetään PIN: "<<inputQ;
         emit sendPin(inputQ);
         close();
     }

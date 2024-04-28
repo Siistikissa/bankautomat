@@ -74,6 +74,7 @@ private:
     void showNewer();
     bool checkWithdraw();
     void uiRefresh();
+    void centralizeText();
     Ui::MainWindow *ui;
     QTimer *timer;
     QSoundEffect beep;
@@ -103,7 +104,6 @@ private:
     bool transactionStopper;
     //dictionary contains multilinquistics
     std::unordered_map<QString, std::vector<QString>> dictionary = {
-        {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
         {"Insert card",std::vector<QString>() = {"Insert card", "Syötä kortti","Sätt i kortet"}},
         {"Abort transaction",std::vector<QString>() = {"Abort transaction", "Keskytä tapahtuma", "Avbryta transaktionen"}},
         {"Insert pin",std::vector<QString>() = {"Insert pin", "Syötä pin", "Sätt in stift"}},
@@ -116,7 +116,8 @@ private:
         {"Show newer",std::vector<QString>() = {"Show newer", "Näytä uudempia", "Visa nyare"}},
         {"Confirm",std::vector<QString>() = {"Confirm", "Vahvista", "Bekräfta"}},
         {"Wrong pin",std::vector<QString>() = {"Wrong pin", "Väärä pin", "Fel stift"}},
-        {"Insufficient funds",std::vector<QString>() = {"Insufficient funds", "Ei riittävästi katetta", "Otillräckliga medel"}}
+        {"Insufficient funds",std::vector<QString>() = {"Insufficient funds", "Ei riittävästi katetta", "Otillräckliga medel"}},
+        {"Choose sum",std::vector<QString>() = {"Choose sum: ", "Valitse summa: ", "Välj summa: "}}
     };
 };
 #endif // MAINWINDOW_H

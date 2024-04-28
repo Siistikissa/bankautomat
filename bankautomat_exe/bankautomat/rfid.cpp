@@ -2,14 +2,14 @@
 
 Rfid::Rfid()
 {
-    if(!QSerialPortInfo::availablePorts().isEmpty()){                               //If serial port have not been connected yet
-    foreach (const QSerialPortInfo &portInfo, QSerialPortInfo::availablePorts())    //Loop trought all ports
+    if(!QSerialPortInfo::availablePorts().isEmpty()){       //loops trough all ports and creates object for each port
+    foreach (const QSerialPortInfo &portInfo, QSerialPortInfo::availablePorts())
     {
-    PORT = new QSerialPort();                                                       //Create object for each port found
-    PORT->setPortName(portInfo.portName());                                         //Sets portname to correct com
-    PORT->open(QIODevice::ReadWrite);                                               //Opens the serialport for read and write
+    PORT = new QSerialPort();
+    PORT->setPortName(portInfo.portName()); //sets port name to correct COM
+    PORT->open(QIODevice::ReadWrite);   //opens the cerial port for read and write
     }
-    connect(PORT, PORT->readyRead(), this, Rfid::readRfidData);                       //connect read data when data is readed
+    connect(PORT, PORT->readyRead, this, Rfid::readRfidData);    //connect read data when data is read
     }
     else{
         qDebug() << "Cardreader not found!";
@@ -28,13 +28,13 @@ void Rfid::openSerialPort()
 {
     this->close();
 }
-void Rfid::readRfidData()
+void Rfid::readRfidData()   //reads and cleans up the data, sends it as a signal to mainwindow
 {
-    QByteArray data = PORT->readAll();                      //Reads all data from object to data array
-    QString rfidData = (data);                              //Convert it to string
-    rfidData.remove('-');                                   //Remove all extra characters
+    QByteArray data = PORT->readAll();
+    QString rfidData = (data);
+    rfidData.remove('-');
     rfidData.remove('>');
     rfidData.remove(QRegularExpression("[^0-9]"));
     qDebug() <<"rfid " <<rfidData;
-    emit cardNumber(rfidData);                              //Send data in signal to mainwindow
+    emit cardNumber(rfidData);
 }

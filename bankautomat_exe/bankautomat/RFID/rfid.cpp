@@ -2,16 +2,14 @@
 
 Rfid::Rfid()
 {
-    foreach (const QSerialPortInfo &portInfo, QSerialPortInfo::availablePorts())
+    foreach (const QSerialPortInfo &portInfo, QSerialPortInfo::availablePorts()) //loops trough all ports and creates object for each port
     {
         PORT = new QSerialPort();
-        PORT->setPortName(portInfo.portName());
-        PORT->open(QIODevice::ReadWrite);
+        PORT->setPortName(portInfo.portName()); //sets port name to correct COM
+        PORT->open(QIODevice::ReadWrite); //opens the cerial port for read and write
     }
     if (PORT->isOpen()){
-        connect(PORT, &QSerialPort::readyRead, this, &Rfid::readRfidData);
-    } else {
-
+        connect(PORT, &QSerialPort::readyRead, this, &Rfid::readRfidData); //connect read data when data is read
     }
 }
 
@@ -27,7 +25,7 @@ void Rfid::openSerialPort()
 {
     this->close();
 }
-void Rfid::readRfidData()
+void Rfid::readRfidData() //reads and cleans up the data, sends it as a signal to mainwindow
 {
     QByteArray data = PORT->readAll();
     QString rfidData = (data);

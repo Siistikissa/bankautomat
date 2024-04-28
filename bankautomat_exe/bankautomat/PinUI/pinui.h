@@ -5,6 +5,7 @@
 #include <QSoundEffect>
 #include <stdbool.h>
 #include <QDebug>
+#include <QDir>
 
 namespace Ui {
 class PinUI;
