@@ -338,8 +338,10 @@ void MainWindow::parseApiReply(QString lastReply)
         for (int i = 0; i < result.length() / 2; ++i) {
             QString timestamp = QDateTime::fromString(result[result.length() / 2 + i], Qt::ISODate).toString("yyyy-MM-dd, hh:mm:ss");
             QString transactionEntry = result[i] + " €, " + timestamp;
+
             displayText = transactionEntry; //+ "\n";
             ui->textEdit->append(displayText);
+
             transactionsVector.push_back(transactionEntry);
             qDebug() << "Transaction entry " << i << ": " << transactionEntry;
         }
