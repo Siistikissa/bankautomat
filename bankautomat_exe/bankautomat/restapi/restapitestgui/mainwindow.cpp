@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    api->postLogin("testi20","1234");
+    api->postLogin("060006491","4321");
     //api->getAllAccounts();
 
 }
@@ -69,7 +69,8 @@ void MainWindow::on_pushButton_3_clicked()
 _*/
 
     coolThing = true;
-    api->getTransactions(1,0,5);
+    api->getAccountId("060006491");
+    //api->getTransactions(1,0,5);
 /*
     QJsonObject jsonObj;
     jsonObj.insert("id",1);

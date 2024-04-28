@@ -4,6 +4,9 @@ const cards = {
   getAll: function(callback) {
     return db.query('select * from cards', callback);
   },
+  searchAcc: function(cu_id,callback){
+    return db.query('select * from accounts where cu_id=?', [cu_id], callback);
+  },
   getById: function(id, callback) {
     return db.query('select * from cards where ca_id=?', [id], callback);
   },

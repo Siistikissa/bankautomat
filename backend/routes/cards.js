@@ -6,7 +6,7 @@ const saltRounds = 10;
 
 router.get('/',
     function (request, response) {
-        cards.getAll(function (err, dbResult) {
+        cards.searchCard(request.body.serial,function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
@@ -15,7 +15,18 @@ router.get('/',
             }
         })
     });
-
+router.post('/ac',
+    function(request, response){
+      cards.searchAcc(request.body.cu_id,function(err,dbResult){
+        if (err){
+          response.json(err);
+        }
+        else{
+          response.json(dbResult);
+        }
+      })
+    }
+);
 router.get('/:id',
     function (request, response) {
         cards.getById(request.params.id, function (err, dbResult) {
