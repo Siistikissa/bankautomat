@@ -31,7 +31,6 @@ void PinUI::on_btnEnter_clicked()
     {
         beep.play();
         QString inputQ = QString::fromStdString(input);
-        qDebug()<<"Lähetetään PIN: "<<inputQ;
         emit sendPin(inputQ);
         close();
     }
