@@ -42,7 +42,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateTimer()
+void MainWindow::updateTimer() //shows the timer on screen, decreases timer every second
 {
     if(appState != 0)
     {
@@ -64,7 +64,7 @@ void MainWindow::updateTimer()
         QString combinedText = logoutTimerText + logoutInfoText;
         ui->logoutInfo->setText(combinedText);
     }
-    if(appState != 0 && logoutTimer==0)
+    if(appState != 0 && logoutTimer==0) //when logout timer reaches 0 the user is logged out
     {
         startScreen();
     }
@@ -72,14 +72,14 @@ void MainWindow::updateTimer()
 
 void MainWindow::startScreen()
 {
-    appState=0;
+    appState=0; // appState is connected to language configurations
     language_startScreen();
-    disconnectAllFunctions();
+    disconnectAllFunctions(); // all button connections are disconnected in every app state
     ui->logoutInfo->setText("");
 }
 
-void MainWindow::language_startScreen()
-{
+void MainWindow::language_startScreen() //called in startScreen, sets all text on UI
+{                                       //if user changes language this function is recalled to update UI
     ui->textEdit->setText(dictionary["Insert card"][language]);
     ui->btnA->setText("");
     ui->btnB->setText("");
@@ -94,7 +94,7 @@ void MainWindow::language_startScreen()
 
 void MainWindow::pinScreen(QString cNum)
 {
-    logoutTimer=60;
+    logoutTimer=60; //resets the logout timer
     appState=1;
     language_pinScreen();
     disconnectAllFunctions();
@@ -120,7 +120,7 @@ void MainWindow::language_pinScreen()
 void MainWindow::mainScreen()
 {
     appState=2;
-    withdraw=0;
+    withdraw=0; // withdraw sum is resetted if user aborts transaction
     withdrawInText="";
     language_mainScreen();
     disconnectAllFunctions();
@@ -149,8 +149,6 @@ void MainWindow::showBalance()
     appState=3;
     disconnectAllFunctions();
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
-    //apiState = "accountBalance";
-    //api->getAccountBalance(cu_id);
     language_showBalance();
 }
 
@@ -160,7 +158,7 @@ void MainWindow::language_showBalance()
     ui->btnB->setText("");
             if(type == "balance"){
             ui->textEdit->setText(dictionary["Account balance"][language] + " " + QString::number(balance) + "€");
-
+            //textEdit is set by language variable
         }
         else if(type == "credit"){
             ui->textEdit->setText(dictionary["Account balance"][language] + " " + QString::number(credit) + "€");
@@ -183,7 +181,7 @@ void MainWindow::showTransactions()
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
     connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::showOlder);
     connect(ui->btnF, &QPushButton::clicked, this, &MainWindow::showNewer);
-    apiState = "transactions";
+    apiState = "transactions"; //this function uses restAPI.dll
     api->getTransactions(ac_id, start, stop);
 }
 
@@ -207,6 +205,7 @@ void MainWindow::showWithdraw()
     language_showWithdraw();
     disconnectAllFunctions();
     setUiTextBalance();
+    //every withdraw sum has a seperate button
     connect(ui->btnA, &QPushButton::clicked, this, &MainWindow::mainScreen);
     connect(ui->btnB, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
     connect(ui->btnC, &QPushButton::clicked, this, &MainWindow::withdraw20);
@@ -232,6 +231,7 @@ void MainWindow::language_showWithdraw()
 
 void MainWindow::withdrawConfirmation()
 {
+    //asks user to confirm the action
     appState=6;
     language_withdrawConfirmation();
     if(checkWithdraw()){
@@ -246,7 +246,7 @@ void MainWindow::withdrawConfirmation()
     ui->textEdit->setText(combinedText);
     }
     else{
-        ui->textEdit->setText(dictionary["Insufficient funds"][language]);//add insuffienct credit
+        ui->textEdit->setText(dictionary["Insufficient funds"][language]); //add insuffienct credit
         ui->btnE->setText("");
         disconnect(ui->btnE, &QPushButton::clicked, this, &MainWindow::withdrawConfirmation);
     }
@@ -266,7 +266,7 @@ void MainWindow::language_withdrawConfirmation()
     ui->textEdit->setAlignment(Qt::AlignCenter);
 }
 
-void MainWindow::withdrawAmount()
+void MainWindow::withdrawAmount() //creates receipt and logs the user out
 {
     withdraw=0;
     withdrawInText="";
@@ -339,7 +339,7 @@ void MainWindow::parseApiReply(QString lastReply)
             QString timestamp = QDateTime::fromString(result[result.length() / 2 + i], Qt::ISODate).toString("yyyy-MM-dd, hh:mm:ss");
             QString transactionEntry = result[i] + " €, " + timestamp;
 
-            displayText = transactionEntry; //+ "\n";
+            displayText = transactionEntry;
             ui->textEdit->append(displayText);
 
             transactionsVector.push_back(transactionEntry);
@@ -351,7 +351,7 @@ void MainWindow::parseApiReply(QString lastReply)
 
 }
 
-void MainWindow::checkPassword(QString tryPin)
+void MainWindow::checkPassword(QString tryPin) //connected to pinUI
 {
     logoutTimer=60;
     pin = tryPin;
@@ -398,8 +398,8 @@ void MainWindow::showNewer()
 
 }
 
-bool MainWindow::checkWithdraw()
-{
+bool MainWindow::checkWithdraw()    //checks if account balance is sufficient to make the transaction
+{                                   //calculates the transaction
     if(type == "balance"){
         if(balance > withdraw){
             transaction = withdraw;
@@ -439,7 +439,7 @@ void MainWindow::createRfid() {
 }
 
 
-void MainWindow::on_RFIDButton_clicked()
+void MainWindow::on_RFIDButton_clicked() //function for using the application without the RFID reader
 {
     pinScreen("060006491");
 
@@ -519,7 +519,7 @@ void MainWindow::on_swedish_clicked()
     uiRefresh();
 }
 
-void MainWindow::uiRefresh()
+void MainWindow::uiRefresh() //refreshes UI to change language
 {
     switch (appState) {
     case 0:
@@ -548,31 +548,11 @@ void MainWindow::uiRefresh()
     }
 }
 
-void MainWindow::centralizeText()
-{
-    QTextCursor cursor = ui->textEdit->textCursor();
-    QTextBlockFormat textBlockFormat = cursor.blockFormat();
-    textBlockFormat.setAlignment(Qt::AlignCenter);
-    cursor.mergeBlockFormat(textBlockFormat);
-    ui->textEdit->setTextCursor(cursor);
-}
-
 void MainWindow::setUiTextBalance()
 {
     withdrawInText = QString::number(withdraw);
     QString chooseSum1 = "";
-    if(language==0)
-    {
-         chooseSum1 = "Choose sum: ";
-    }
-    if(language==1)
-    {
-        chooseSum1 = "Valitse summa: ";
-    }
-    if(language==2)
-    {
-        chooseSum1 = "Välj summa: ";
-    }
+    chooseSum1 = dictionary["Choose sum"][language];
     QString chooseSum2 = "€";
     QString combinedText = chooseSum1 + withdrawInText + chooseSum2;
     ui->textEdit->setText(combinedText);
