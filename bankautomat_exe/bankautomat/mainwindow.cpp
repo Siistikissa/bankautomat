@@ -184,7 +184,7 @@ void MainWindow::showTransactions()
     connect(ui->btnE, &QPushButton::clicked, this, &MainWindow::showOlder);
     connect(ui->btnF, &QPushButton::clicked, this, &MainWindow::showNewer);
     apiState = "transactions";
-    api->getTransactions(ac_id, start, stop); //TODO: add logic to start and stop
+    api->getTransactions(ac_id, start, stop);
 }
 
 void MainWindow::language_showTransactions()
@@ -318,8 +318,19 @@ void MainWindow::parseApiReply(QString lastReply)
         QString displayText;
 
         QStringList result = lastReply.split(", ");
-        if (result.isEmpty()) {
+        if (lastReply.isEmpty()) {
             transactionStopper = true;
+            if (transactionsVector.size() <= 5){
+                for (int x = 0; x < transactionsVector.size(); ++x){
+                   ui->textEdit->append(transactionsVector[x]);
+                }
+            }
+            else{
+                for (int x = 0; x < 5; ++x){
+                    ui->textEdit->append(transactionsVector[x]);
+                }
+            }
+            return;
         } else {
             transactionStopper = false;
         }
@@ -327,12 +338,12 @@ void MainWindow::parseApiReply(QString lastReply)
         for (int i = 0; i < result.length() / 2; ++i) {
             QString timestamp = QDateTime::fromString(result[result.length() / 2 + i], Qt::ISODate).toString("yyyy-MM-dd, hh:mm:ss");
             QString transactionEntry = result[i] + " €, " + timestamp;
-                                           displayText += transactionEntry + "\n";
+            displayText = transactionEntry; //+ "\n";
+            ui->textEdit->append(displayText);
             transactionsVector.push_back(transactionEntry);
             qDebug() << "Transaction entry " << i << ": " << transactionEntry;
         }
 
-        ui->textEdit->setText(displayText);
     }
 
 
@@ -533,6 +544,15 @@ void MainWindow::uiRefresh()
     default:
         break;
     }
+}
+
+void MainWindow::centralizeText()
+{
+    QTextCursor cursor = ui->textEdit->textCursor();
+    QTextBlockFormat textBlockFormat = cursor.blockFormat();
+    textBlockFormat.setAlignment(Qt::AlignCenter);
+    cursor.mergeBlockFormat(textBlockFormat);
+    ui->textEdit->setTextCursor(cursor);
 }
 
 void MainWindow::setUiTextBalance()

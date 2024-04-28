@@ -74,6 +74,7 @@ private:
     void showNewer();
     bool checkWithdraw();
     void uiRefresh();
+    void centralizeText();
     Ui::MainWindow *ui;
     QTimer *timer;
     QSoundEffect beep;
