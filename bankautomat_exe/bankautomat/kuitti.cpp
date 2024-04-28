@@ -159,7 +159,5 @@ void Kuitti::setParameters(QString serial, QString type, int transaction, std::v
     label->setPixmap(QPixmap::fromImage(img));
     layout->addWidget(label);
     setLayout(layout);
-
-    qDebug() << "Ikkunan koko:" << this->size();
 }
 

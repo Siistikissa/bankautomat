@@ -103,7 +103,6 @@ private:
     bool transactionStopper;
     //dictionary contains multilinquistics
     std::unordered_map<QString, std::vector<QString>> dictionary = {
-        {"Test", std::vector<QString>() = {"Test", "Testi", "Testa"}},
         {"Insert card",std::vector<QString>() = {"Insert card", "Syötä kortti","Sätt i kortet"}},
         {"Abort transaction",std::vector<QString>() = {"Abort transaction", "Keskytä tapahtuma", "Avbryta transaktionen"}},
         {"Insert pin",std::vector<QString>() = {"Insert pin", "Syötä pin", "Sätt in stift"}},
